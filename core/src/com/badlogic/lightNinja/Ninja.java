@@ -93,16 +93,13 @@ public class Ninja {
 			jump();
 		}
 		
-		//Iterator<Shuriken> iter = shurikens.iterator();
-		for(Shuriken shrkn : shurikens){
+		Iterator<Shuriken> iter = shurikens.iterator();
+		while(iter.hasNext()){
+			Shuriken shrkn = iter.next();
 			shrkn.moveTo();
-			//System.out.println("Time Utils "+TimeUtils.nanoTime());
-			//long test = TimeUtils.nanoTime() - lifespanSh;
-			//System.out.println("Soustraction " + test);
 			if((TimeUtils.nanoTime() - lifespanSh) >= shrkn.startTime){
-				//shrkn.dispose();
-				//iter.remove();
-				//System.out.println("dispose");
+				iter.remove();
+				shrkn.dispose();
 			}
 		}
 	}
@@ -113,8 +110,6 @@ public class Ninja {
 
 	private void attack(float destX, float destY) {
 		System.out.println("attack");
-		
-		//System.out.println(this.ninja.x + " " + this.ninja.y);
 		
 		Shuriken shuriken = new Shuriken();
 		shuriken.create(batch, camera, this.ninja.x + ninja.getWidth()/2, this.ninja.y + ninja.getHeight()/2, destX, destY, TimeUtils.nanoTime());		
