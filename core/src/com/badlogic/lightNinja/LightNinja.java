@@ -12,6 +12,7 @@ public class LightNinja extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Ninja ninja;
+	private Room room;
 	
 	@Override
 	public void create () {
@@ -24,6 +25,9 @@ public class LightNinja extends ApplicationAdapter {
 		ninja = new Ninja();
 		ninja.create(batch, camera);
 		
+		room = new Room();
+		room.create(batch, camera);
+		
 	}
 
 	@Override
@@ -32,13 +36,16 @@ public class LightNinja extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		batch.begin();
+			room.draw();
 			ninja.draw();
 		batch.end();
 		
 		ninja.render();
+		room.render();
 	}
 	
 	public void dispose(){
 		ninja.dispose();
+		room.dispose();
 	}
 }
