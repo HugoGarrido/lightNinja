@@ -20,7 +20,7 @@ public class Ninja extends People {
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
-
+	private float isJumping;
 	
 	
 	private int dectectionZone;
@@ -56,6 +56,7 @@ public class Ninja extends People {
 		super.currentRoom = room;
 		
 		super.walkStep = 0.1f;
+		super.fallStep = 0.1f;
 		
 	}
 	
@@ -77,6 +78,7 @@ public class Ninja extends People {
 	
 	
 	public void render(){
+		float currentY = 0;
 		
 		//Attack
 		if(Gdx.input.justTouched()){	
@@ -93,7 +95,9 @@ public class Ninja extends People {
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
-			jump();
+			if(!isFalling){
+				this.isJumping = 1;
+			}
 		}
 		
 		Iterator<Shuriken> iter = shurikens.iterator();
@@ -107,6 +111,8 @@ public class Ninja extends People {
 		}
 		
 		gravity();
+		jump();
+		
 		
 		updateRectangle();
 		
@@ -140,9 +146,14 @@ public class Ninja extends People {
 //			ninja.y -= step;
 //		}
 		
+		super.position.y += isJumping;
+		isJumping -= fallStep;
+		if (isJumping <= 0)
+			isJumping = 0;
 		
 		
-		System.out.println("jump");
+		
+		
 	}
 	
 	public Vector2 getPosition(){

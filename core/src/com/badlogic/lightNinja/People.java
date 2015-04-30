@@ -8,15 +8,22 @@ public abstract class People {
 	protected Room currentRoom;
 	protected Rectangle rectangle;
 	
+	protected boolean isFalling;
+	
 	protected float walkStep;
+	protected float fallStep;
 	
 	public void gravity(){
 		if(this.position.x > 1 && this.position.x <= Constante.ROOM_WIDTH 
 				&& this.position.y > 1 && this.position.y <= Constante.ROOM_HEIGHT ){
 			
-			if(currentRoom.elmtMatrix[Math.round(this.position.x)][Math.round(this.position.y - 1)] == 0
-					&& currentRoom.elmtMatrix[Math.round(this.position.x + 1)][Math.round(this.position.y - 1)] == 0){
-				this.position.y -= 1;
+			if(currentRoom.elmtMatrix[(int)(this.position.x)][(int)(this.position.y - this.fallStep)] == 0
+					&& currentRoom.elmtMatrix[(int)(this.position.x + 1)][(int)(this.position.y - this.fallStep)] == 0){
+				this.position.y -= this.fallStep;
+				this.isFalling = true;
+			}
+			else{
+				this.isFalling = false;
 			}
 			
 		}
