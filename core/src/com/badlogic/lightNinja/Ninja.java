@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Ninja {
+public class Ninja extends People {
 	
 	private int life;
 	private float speed;
@@ -20,14 +20,12 @@ public class Ninja {
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
-	private Vector2 position;
-	private int step;
+
 	
 	
 	private int dectectionZone;
 	private boolean lighted;
 	
-	private Rectangle ninja;
 	private Texture ninjaImage;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
@@ -38,27 +36,32 @@ public class Ninja {
 	
 	
 	public Ninja(){
-		this.step = 8;
+		
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera){
+	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
 		ninjaImage = new Texture(Gdx.files.internal("bucket.png"));
 		this.batch = batch;
 		this.camera = camera;
 		
-		ninja = new Rectangle();
-		ninja.x = 800/2 - 64/2;
-		ninja.y = 400/2 - 64/2;
-		ninja.width = 64;
-		ninja.height = 64;
+		super.rectangle = new Rectangle();
+		super.rectangle.x = 9;
+		super.rectangle.y = 10;
+		super.rectangle.width = 2;
+		super.rectangle.height = 2;
+		super.position = new Vector2(super.rectangle.x, super.rectangle.y);
 		
 		shurikens = new Array<Shuriken>();
+		
+		super.currentRoom = room;
+		
+		super.walkStep = 0.1f;
 		
 	}
 	
 	public void draw(){
-		batch.draw(ninjaImage, ninja.x, ninja.y);
-		//fonction qui va afficher les bon shurikens
+		
+		batch.draw(ninjaImage, super.rectangle.x*Constante.LENGHT_BOX, super.rectangle.y*Constante.LENGHT_BOX);
 		
 		if(shurikens.size != 0){
 			for(Shuriken shrk : shurikens){
@@ -69,18 +72,18 @@ public class Ninja {
 	}
 	
 	public Rectangle getRectangle(){
-		return this.ninja;
+		return super.rectangle;
 	}
 	
 	
 	public void render(){
-		//if(Gdx.input.isTouched()){
+		
+		//Attack
 		if(Gdx.input.justTouched()){	
-			//System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 			attack(Gdx.input.getX(), Gdx.input.getY());
-			//attack(300, 300);
 		}
 		
+		//Deplacement
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
 			move(-1);
 		}
@@ -102,6 +105,11 @@ public class Ninja {
 				shrkn.dispose();
 			}
 		}
+		
+		gravity();
+		
+		updateRectangle();
+		
 	}
 	
 	public void dispose(){
@@ -109,28 +117,17 @@ public class Ninja {
 	}
 
 	private void attack(float destX, float destY) {
-		System.out.println("attack");
 		
 		Shuriken shuriken = new Shuriken();
-		shuriken.create(batch, camera, this.ninja.x + ninja.getWidth()/2, this.ninja.y + ninja.getHeight()/2, destX, destY, TimeUtils.nanoTime());		
+		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, super.rectangle.y + super.rectangle.getHeight()/2, destX / Constante.LENGHT_BOX, destY / Constante.LENGHT_BOX, TimeUtils.nanoTime());		
 		shurikens.add(shuriken);
 		
 	}
 	
-	private void move(int sens){
-		System.out.println("move dans sens" + sens);
-		int test = 0;
-		if(this.ninja.x > 0){
-			this.ninja.x +=sens * this.step;
-		}
-		
-		if(this.ninja.x < 800 - ninjaImage.getWidth()){
-			this.ninja.x +=sens * this.step;
-			test = sens * this.step;
-			System.out.println(ninja.x);
-		}
-		
-	}
+//	@Override
+//	public void move(int sens){
+//		
+//	}
 	
 	private void jump(){
 //		int step = 15;
@@ -143,6 +140,12 @@ public class Ninja {
 //			ninja.y -= step;
 //		}
 		
+		
+		
 		System.out.println("jump");
+	}
+	
+	public Vector2 getPosition(){
+		return this.position;
 	}
 }

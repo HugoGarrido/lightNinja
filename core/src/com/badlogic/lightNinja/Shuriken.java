@@ -20,15 +20,15 @@ public class Shuriken{
 	public long startTime;
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, float posX, float posY, float destX, float destY, long startTime){
-		this.shurikenImage = new Texture(Gdx.files.internal("droplet.png"));
+		this.shurikenImage = new Texture(Gdx.files.internal("shuriken.png"));
 		this.batch = batch;
 		this.camera = camera;
 		
 		this.shuriken = new Rectangle();
 		this.shuriken.x = posX;
 		this.shuriken.y = posY;
-		this.shuriken.width = 64;
-		this.shuriken.height = 64;
+		this.shuriken.width = 1;
+		this.shuriken.height = 1;
 		
 		this.destination = new Vector2();
 		
@@ -43,28 +43,24 @@ public class Shuriken{
 		Vector2 center = new Vector2(0,0);
 		shuriken.getCenter(center);
 		
-		//System.out.println("center " + center);
 		
 		//Récupérer le vecteur de l'origine à la destination;
 		Vector2 dest = new Vector2(0,0);
 		dest = this.destination.cpy();
-		
-		//System.out.println("destination " + dest);
+
 		
 		//Calculer le vecteur qui va du ninja à la destination.
 		//orientation = dest - center
 		orientation = dest.add(center.scl(-1));
 		orientation.scl(1, -1);
-		//System.out.println("orientation " + orientation);
 		
 		//Normaliser orientation
 		//Vector2 unit = orientation.scl(1/(dest.dst(center)));
 		unit = orientation.nor(); 
-		//System.out.println("unit " + unit);
 	}
 	
 	public void draw(){
-		this.batch.draw(shurikenImage, shuriken.x, shuriken.y); 
+		this.batch.draw(shurikenImage, shuriken.x * Constante.LENGHT_BOX, shuriken.y * Constante.LENGHT_BOX); 
 	}
 	
 	public Rectangle getRectangle(){
@@ -72,15 +68,11 @@ public class Shuriken{
 	}
 	
 	public void moveTo(){
-		//float step = 30 * Gdx.graphics.getDeltaTime();
 		
-		int step = 3;
+		float step = 0.5f;
 		Vector2 center = new Vector2(0,0);
 		shuriken.getCenter(center);
-		/*
-		System.out.println("step " +step);
-		System.out.println("center qui bouge " + center );
-		*/
+		
 		Vector2 stepVect = unit.cpy().scl(step, step);
 				
 		//Bouger le shuriken

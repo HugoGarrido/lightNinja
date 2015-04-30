@@ -18,15 +18,15 @@ public class LightNinja extends ApplicationAdapter {
 	public void create () {
 		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 480);
+		camera.setToOrtho(false, Constante.ROOM_HEIGHT, Constante.ROOM_HEIGHT);
 		
 		batch = new SpriteBatch();
-		
-		ninja = new Ninja();
-		ninja.create(batch, camera);
-		
+
 		room = new Room();
 		room.create(batch, camera);
+		
+		ninja = new Ninja();
+		ninja.create(batch, camera, room);
 		
 	}
 

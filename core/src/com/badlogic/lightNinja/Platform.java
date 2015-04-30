@@ -16,8 +16,8 @@ public class Platform {
 	
 	final int LENGHT_BOX = 32;
 	
-	private int width;
-	private int height;
+	protected int width;
+	protected int height;
 	protected int posX;
 	protected int posY;
 	private Texture LightedTex;
@@ -37,7 +37,7 @@ public class Platform {
 	private void ConstructBoxes() {
 		for (int i = 0; i < width; ++i){
 			for (int j = 0; j < height; ++j){
-				Box box = new Box((j + this.posX )* LENGHT_BOX,( i + this.posY) * LENGHT_BOX, true);
+				Box box = new Box((i + this.posX )* LENGHT_BOX,( j + this.posY) * LENGHT_BOX, true);
 				box.create(batch, camera);
 				boxes.add(box);
 			}
