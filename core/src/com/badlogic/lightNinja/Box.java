@@ -14,8 +14,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Box {
 	
-	private int posX;
-	private int posY;
+	private float posX;
+	private float posY;
 	private boolean lighted;
 	
 	private SpriteBatch batch;
@@ -27,10 +27,10 @@ public class Box {
 		this.lighted = lighted;
 	}
 	
-	public int getPosX(){
+	public float getPosX(){
 		return posX;
 	}
-	public int getPosY(){
+	public float getPosY(){
 		return posY;
 	}
 	
@@ -52,14 +52,11 @@ public class Box {
 	}
 	
 	public void draw(Texture tex) {
-		batch.draw(tex, posX, posY);
+		batch.draw(tex, posX * Constante.LENGHT_BOX, posY * Constante.LENGHT_BOX);
 	}
 	
-	public void render() {
-		
-	}
+	public void render() {}
 	
-	public void dispose() {
-	}
+	public void dispose() {}
 
 }

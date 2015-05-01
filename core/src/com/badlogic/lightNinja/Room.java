@@ -16,16 +16,25 @@ public class Room extends Constante{
 	private Texture fond;
 	private int[][] lightMatrix;
 	protected int[][] elmtMatrix;
+	protected int[][] idMatrix;
 	
-	private Array<Platform> platforms;
+	protected Array<Platform> platforms;
+	protected Array<MobilePlatform> mobilePlatforms;
 	
 	public Room(){
 		platforms = new Array<Platform>();
+		mobilePlatforms = new Array<MobilePlatform>();
 		
 		elmtMatrix = new int[Constante.ROOM_WIDTH][Constante.ROOM_HEIGHT];
 		for(int i=0; i< Constante.ROOM_WIDTH; i++){
 			for(int j=0; j< Constante.ROOM_HEIGHT; j++){
 				elmtMatrix[i][j] = 0;
+			}
+		}
+		idMatrix = new int[Constante.ROOM_WIDTH][Constante.ROOM_HEIGHT];
+		for(int i=0; i< Constante.ROOM_WIDTH; i++){
+			for(int j=0; j< Constante.ROOM_HEIGHT; j++){
+				idMatrix[i][j] = -1;
 			}
 		}
 
@@ -49,14 +58,35 @@ public class Room extends Constante{
 		Platform p4 = new Platform(9, 1, 19, 2);
 		addPlatform(p4);
 		
-		MobilePlatform p5 = new MobilePlatform(3, 1, 10, 10, 10, 17, false);
-		addPlatform(p5);
+		MobilePlatform p5 = new MobilePlatform(8, 1, 10, 10, 10, 14, false);
+		addMobilePlatform(p5);
 		
-		MobilePlatform p6 = new MobilePlatform(1, 3, 3, 5, 5, 11, true);
-		addPlatform(p6);
+		MobilePlatform p6 = new MobilePlatform(3, 1, 2, 5, 5, 9, true);
+		addMobilePlatform(p6);
 		
 		Platform p7 = new Platform(1, 5, 5, 1);
 		addPlatform(p7);
+		
+	}
+	
+	public void addMobilePlatform(MobilePlatform pMob){
+		pMob.create(batch, camera);
+		
+		mobilePlatforms.add(pMob);
+		if (pMob.getVertical()){
+			for (int i = (int) pMob.posX; i < (int) pMob.posX + pMob.width; ++i){
+				for (int j = (int) pMob.posA; j < (int) pMob.posB; ++j){
+					idMatrix[i][j] = pMob.getId();
+				}
+			}
+		}
+		else {
+			for (int i = (int)pMob.posA; i < (int) pMob.posB; ++i){
+				for (int j =  (int) pMob.posX; j < (int) pMob.posX + pMob.height; ++j){
+					idMatrix[i][j] = pMob.getId();
+				}
+			}
+		}
 		
 	}
 	
@@ -67,16 +97,10 @@ public class Room extends Constante{
 		//Voir si c'est encore utile, pour l'instant on utilise pas le tableau de platform
 		platforms.add(p);
 		
-		if(p instanceof Platform){
-			for(int i = 0; i < p.width; i++ ){
-				for(int j = 0; j < p.height; j++){
-					elmtMatrix[p.posX + i][p.posY + j] = 1;
-				}
+		for(int i = 0; i < p.width; i++ ){
+			for(int j = 0; j < p.height; j++){
+				elmtMatrix[(int)p.posX + i][(int)p.posY + j] = 1;
 			}
-		}
-		
-		else if(p instanceof MobilePlatform){
-			//To do
 		}
 	}
 	
@@ -86,16 +110,31 @@ public class Room extends Constante{
 		elmtMatrix[Math.round(position.x)][Math.round(position.y)] = 13;
 	}
 	
+	public void updatePlatform(){
+		for (MobilePlatform p : mobilePlatforms){ 
+			for (Box b : p.boxes){
+				elmtMatrix[(int)b.getPosX()][(int)b.getPosY()] = 2;
+			}
+		}
+	}
+	
 	
 	public void draw(){
 		batch.draw(fond, 0, 0);
 		for (Platform p : platforms){ 
 			p.draw();
 		}
+		for (MobilePlatform p : mobilePlatforms){ 
+			p.draw();
+		}
 	}
 	
 	public void render(){
+		updatePlatform();
 		for (Platform p : platforms){
+			p.render();
+		}
+		for (MobilePlatform p : mobilePlatforms){ 
 			p.render();
 		}
 	}

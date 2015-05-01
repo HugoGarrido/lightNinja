@@ -20,10 +20,7 @@ public class Ninja extends People {
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
-	private float isJumping;
-	
-	
-	private int dectectionZone;
+	private int detectionZone;
 	private boolean lighted;
 	
 	private Texture ninjaImage;
@@ -34,10 +31,7 @@ public class Ninja extends People {
 	private Array<Shuriken> shurikens;
 	
 	
-	
-	public Ninja(){
-		
-	}
+	public Ninja(){}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
 		ninjaImage = new Texture(Gdx.files.internal("bucket.png"));
@@ -55,8 +49,8 @@ public class Ninja extends People {
 		
 		super.currentRoom = room;
 		
-		super.walkStep = 0.1f;
-		super.fallStep = 0.1f;
+		//super.walkStep = 0.1f;
+		//super.gravity = 0.1f;
 		
 	}
 	
@@ -68,8 +62,7 @@ public class Ninja extends People {
 			for(Shuriken shrk : shurikens){
 				shrk.draw();
 			}
-		}
-		
+		}	
 	}
 	
 	public Rectangle getRectangle(){
@@ -87,18 +80,20 @@ public class Ninja extends People {
 		
 		//Deplacement
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
-			move(-1);
+			super.moveLeft();
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
-			move(1);
+			super.moveRight();
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
-			if(!isFalling){
-				this.isJumping = 1;
-			}
+			super.jump();
 		}
+		
+//		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
+//			super.stay();
+//		}
 		
 		Iterator<Shuriken> iter = shurikens.iterator();
 		while(iter.hasNext()){
@@ -110,10 +105,7 @@ public class Ninja extends People {
 			}
 		}
 		
-		gravity();
-		jump();
-		
-		
+		super.computePosition();
 		updateRectangle();
 		
 	}
@@ -129,33 +121,16 @@ public class Ninja extends People {
 		shurikens.add(shuriken);
 		
 	}
-	
-//	@Override
-//	public void move(int sens){
+
+//	private void jump(){
+//		
+//		super.position.y += isJumping;
+//		isJumping -= fallStep;
+//		if (isJumping <= 0)
+//			isJumping = 0;
 //		
 //	}
-	
-	private void jump(){
-//		int step = 15;
-//		int oldPosition = (int)ninja.y;
-//		this.ninja.y += step * 2;
-//		if(ninja.y > oldPosition){
-//			
-//		}
-//		while(ninja.y != oldPosition){
-//			ninja.y -= step;
-//		}
-		
-		super.position.y += isJumping;
-		isJumping -= fallStep;
-		if (isJumping <= 0)
-			isJumping = 0;
-		
-		
-		
-		
-	}
-	
+//	
 	public Vector2 getPosition(){
 		return this.position;
 	}

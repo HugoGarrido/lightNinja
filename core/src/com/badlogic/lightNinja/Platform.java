@@ -18,8 +18,8 @@ public class Platform {
 	
 	protected int width;
 	protected int height;
-	protected int posX;
-	protected int posY;
+	protected float posX;
+	protected float posY;
 	private Texture LightedTex;
 	private Texture DarkTex;
 	protected Array<Box> boxes;
@@ -37,7 +37,7 @@ public class Platform {
 	private void ConstructBoxes() {
 		for (int i = 0; i < width; ++i){
 			for (int j = 0; j < height; ++j){
-				Box box = new Box((i + this.posX )* LENGHT_BOX,( j + this.posY) * LENGHT_BOX, true);
+				Box box = new Box((i + (int) this.posX ),( j + (int) this.posY), true);
 				box.create(batch, camera);
 				boxes.add(box);
 			}
