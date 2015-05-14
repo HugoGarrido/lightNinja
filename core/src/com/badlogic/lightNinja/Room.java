@@ -44,7 +44,7 @@ public class Room extends Constante{
 		
 		this.batch = batch;
 		this.camera = camera;
-		fond = new Texture(Gdx.files.internal("expl_fond.jpg"));
+		fond = new Texture(Gdx.files.internal("background_night.png"));
 		
 		Platform p1 = new Platform(Constante.ROOM_HEIGHT, 1, 0, 0);
 		addPlatform(p1);
