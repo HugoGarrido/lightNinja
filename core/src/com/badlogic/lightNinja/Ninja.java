@@ -37,8 +37,7 @@ public class Ninja extends People {
 		ninjaImage = new Texture(Gdx.files.internal("bucket.png"));
 		this.batch = batch;
 		this.camera = camera;
-		
-		super.rectangle = new Rectangle();
+
 		super.rectangle.x = 9;
 		super.rectangle.y = 10;
 		super.rectangle.width = 2;
