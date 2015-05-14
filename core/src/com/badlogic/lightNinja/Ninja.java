@@ -40,6 +40,8 @@ public class Ninja extends People {
 	}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
+		this.life = 15;
+		this.score = 20;
 		ninjaImage = new Texture(Gdx.files.internal("bucket.png"));
 		this.batch = batch;
 		this.camera = camera;
@@ -150,13 +152,26 @@ public class Ninja extends People {
 		isJumping -= fallStep;
 		if (isJumping <= 0)
 			isJumping = 0;
-		
-		
-		
-		
 	}
 	
 	public Vector2 getPosition(){
 		return this.position;
+	}
+	
+	public int getLife(){
+		return this.life;
+	}
+
+	public int getScore() {
+		return this.score;
+	}
+	
+	public void setLife(int damage){
+		this.life -= damage;
+	}
+	
+	
+	public void setScore(int bonus){
+		this.score += bonus;
 	}
 }

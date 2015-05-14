@@ -13,6 +13,8 @@ public class LightNinja extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Ninja ninja;
 	private Room room;
+	private SaveManager save;
+	
 	
 	@Override
 	public void create () {
@@ -27,6 +29,17 @@ public class LightNinja extends ApplicationAdapter {
 		
 		ninja = new Ninja();
 		ninja.create(batch, camera, room);
+		
+		Object[] objectInGame = new Object[2];
+		objectInGame[0] = ninja;
+		objectInGame[1] = room;
+		System.out.println(ninja.getClass());
+		//save.saveGame(ninja, "test1");
+		
+//		savedNinja = new Testjson();
+//		savedNinja.saveNinja(ninja);
+//		savedNinja.print();
+//		savedNinja.saveJson("level_1");
 		
 	}
 
