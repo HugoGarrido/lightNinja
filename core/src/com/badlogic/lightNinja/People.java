@@ -37,7 +37,8 @@ public abstract class People {
 		if(this.position.x > 1 && this.position.x <= Constante.ROOM_WIDTH 
 			&& this.position.y > 1 && this.position.y <= Constante.ROOM_HEIGHT 
 			&& currentRoom.elmtMatrix[(int)(this.position.x)][(int)(this.position.y - this.gravity)] == 0
-			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] == 0){
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] == 0
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth())][(int)(this.position.y - this.gravity)] == 0){
 				this.direction.y -= this.gravity;
 				this.isLanded = false;
 			}
