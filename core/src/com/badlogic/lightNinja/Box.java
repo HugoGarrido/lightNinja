@@ -14,31 +14,30 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Box {
 	
-	private float posX;
-	private float posY;
+	protected Rectangle rect = new Rectangle();
 	private boolean lighted;
 	
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	public Box (int posX, int posY, boolean lighted){
-		this.posX = posX;
-		this.posY = posY;
+	public Box (float posX, float posY, boolean lighted){
+		this.rect.x = posX;
+		this.rect.y = posY;
 		this.lighted = lighted;
 	}
 	
 	public float getPosX(){
-		return posX;
+		return this.rect.x;
 	}
 	public float getPosY(){
-		return posY;
+		return this.rect.y;
 	}
 	
 	public void moveX(float move){
-		posX += move;
+		this.rect.x += move;
 	}
 	public void moveY(float move){
-		posY += move;
+		this.rect.y += move;
 	}
 	
 	
@@ -52,7 +51,7 @@ public class Box {
 	}
 	
 	public void draw(Texture tex) {
-		batch.draw(tex, posX * Constante.LENGHT_BOX, posY * Constante.LENGHT_BOX);
+		batch.draw(tex, this.rect.x * Constante.LENGHT_BOX, this.rect.y * Constante.LENGHT_BOX);
 	}
 	
 	public void render() {}
