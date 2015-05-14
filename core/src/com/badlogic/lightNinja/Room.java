@@ -67,6 +67,21 @@ public class Room extends Constante{
 		Platform p7 = new Platform(1, 5, 5, 1);
 		addPlatform(p7);
 		
+		Platform p8 = new Platform(5, 1, 25, 3);
+		addPlatform(p8);
+		
+		Platform p9 = new Platform(5, 1, 30, 5);
+		addPlatform(p9);
+		
+		Platform p10 = new Platform(5, 1, 36, 7);
+		addPlatform(p10);
+		
+		Platform p11 = new Platform(5, 1, 40, 9);
+		addPlatform(p11);
+		
+		Platform p12 = new Platform(5, 1, 46, 11);
+		addPlatform(p12);
+		
 	}
 	
 	public void addMobilePlatform(MobilePlatform pMob){

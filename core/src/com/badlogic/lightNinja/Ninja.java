@@ -60,7 +60,6 @@ public class Ninja extends People {
 		this.batch = batch;
 		this.camera = camera;
 		
-		
 		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
 		
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth()/FRAME_COLS, spriteSheet.getHeight()/FRAME_ROWS);
@@ -93,15 +92,6 @@ public class Ninja extends People {
         }
         
         stillFrames[0] = tmp[0][0];
-        
-//        for (int i = 0; i < FRAME_ROWS; i++) {
-//            for (int j = 0; j < FRAME_COLS; j++) {
-//            	for(int z = 0; z < walkFrames.length; z++){
-//            		walkFrames[indexW++] = tmp[i][j];
-//            	}
-//                
-//            }
-//        }
         
         walkAnimation = new Animation(0.080f, walkFramesRight);
        

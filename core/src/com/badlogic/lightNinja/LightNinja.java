@@ -14,11 +14,14 @@ public class LightNinja extends ApplicationAdapter {
 	private Ninja ninja;
 	private Room room;
 	
+	private float posCamX = 0;
+	private float posCamY = 0;
+	
 	@Override
 	public void create () {
 		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Constante.ROOM_HEIGHT, Constante.ROOM_HEIGHT);
+		camera.setToOrtho(false, 1024, 768);
 		
 		batch = new SpriteBatch();
 
@@ -35,10 +38,34 @@ public class LightNinja extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0.2F, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		float stepCam = 0.05f;
+	
+		posCamX += (ninja.getRectangle().x * Constante.LENGHT_BOX - camera.position.x) * stepCam;
+		posCamY += (ninja.getRectangle().y * Constante.LENGHT_BOX - camera.position.y) * stepCam;
+
+		if (posCamX <= 512){
+			posCamX = 512;
+		}
+		else if (posCamX >= Constante.ROOM_WIDTH * Constante.LENGHT_BOX - 512){
+			posCamX = Constante.ROOM_WIDTH * Constante.LENGHT_BOX - 512;
+		}
+		if (posCamY  <= 388){
+			posCamY = 388;
+		}
+		else if (posCamY >= Constante.ROOM_HEIGHT * Constante.LENGHT_BOX - 388){
+			posCamY = Constante.ROOM_WIDTH * Constante.LENGHT_BOX - 388;
+		}
+		
+		camera.position.set(posCamX, posCamY, 0);
+		camera.update();
+		
+		batch.setProjectionMatrix(camera.combined);
+		
 		batch.begin();
 		    room.draw();
 			ninja.draw();
 		batch.end();
+		
 		
 		ninja.render();
 		room.render();

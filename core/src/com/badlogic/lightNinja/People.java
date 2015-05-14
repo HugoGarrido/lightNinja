@@ -8,7 +8,7 @@ public abstract class People {
 	protected Vector2 direction;
 	protected Vector2 lastDirection;
 	protected Room currentRoom;
-	protected Rectangle rectangle;
+	protected Rectangle rectangle = new Rectangle();
 	
 	protected boolean isFalling;
 	
@@ -17,6 +17,7 @@ public abstract class People {
 	
 	protected float gravity;
 	protected Vector2 jump;
+	protected float jumping;
 	protected boolean isLanded;
 	protected boolean isJumping;
 	protected int nbJump;
@@ -36,13 +37,14 @@ public abstract class People {
 		if(this.position.x > 1 && this.position.x <= Constante.ROOM_WIDTH 
 			&& this.position.y > 1 && this.position.y <= Constante.ROOM_HEIGHT 
 			&& currentRoom.elmtMatrix[(int)(this.position.x)][(int)(this.position.y - this.gravity)] == 0
-			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] == 0){
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] == 0
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth())][(int)(this.position.y - this.gravity)] == 0){
 				this.direction.y -= this.gravity;
 				this.isLanded = false;
 			}
 		else{
 			this.isLanded = true;
-			this.nbJump = 2;
+			this.nbJump = 1;
 		}	
 	}
 	
@@ -79,21 +81,32 @@ public abstract class People {
 	}
 	
 	public void jump(){
-		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + jumpStep + rectangle.getHeight())] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + jumpStep + rectangle.getHeight())] == 0
-			&& this.nbJump > 0){
-				this.jump.y = jumpStep;
+		if(this.nbJump > 0){
+				this.jumping = jumpStep;
 				isJumping = true;
 				this.nbJump--;
 		}	
 	}
 	
-	public void decrementJump(){
-		if (this.jump.y >= 0){
-			this.jump.y -= 0.1f;
+	public void jumpUp(){
+		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + walkStep + rectangle.getHeight())] == 0
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth()/2)][(int)(position.y + walkStep + rectangle.getHeight())] == 0
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + walkStep + rectangle.getHeight())] == 0) {
+				this.direction.y += this.jumping;
 		}
-		else if (this.jump.y < 0){
-			this.jump.y = 0;
+		else{
+			jumping = 0;
+			isJumping = false;
+		}
+	}
+	
+	public void decrementJump(){
+		if (this.jumping > 0){
+			this.jumping -= this.walkStep;
+			jumpUp();
+		}
+		else if (this.jumping == 0){
+			jumping = 0;
 			isJumping = false;
 		}
 		else isJumping = false;
@@ -135,9 +148,10 @@ public abstract class People {
 		gravity();
 		
 		//jump
-		this.direction.add(jump);
-		if (isJumping)
+		//this.direction.add(jump);
+		if (isJumping){
 			decrementJump();
+		}
 		
 		//compute
 		this.position.add(direction);
@@ -148,5 +162,7 @@ public abstract class People {
 	public void updateRectangle(){
 		this.rectangle.x = this.position.x;
 		this.rectangle.y = this.position.y;
+		
+		
 	}
 }
