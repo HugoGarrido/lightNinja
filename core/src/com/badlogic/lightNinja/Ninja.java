@@ -14,9 +14,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Ninja extends People {
 	
-	private int life;
+	private int life = 10;
 	private float speed;
-	private int score;
+	private int score = 0;
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
@@ -47,9 +47,6 @@ public class Ninja extends People {
 		shurikens = new Array<Shuriken>();
 		
 		super.currentRoom = room;
-		
-		//super.walkStep = 0.1f;
-		//super.gravity = 0.1f;
 		
 	}
 	
@@ -90,6 +87,7 @@ public class Ninja extends People {
 			super.jump();
 		}
 		
+		checkArtefact();
 //		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
 //			super.stay();
 //		}
@@ -120,6 +118,18 @@ public class Ninja extends People {
 		shurikens.add(shuriken);
 		
 	}
+	
+	public void checkArtefact(){
+		Iterator<Artefact> iter = currentRoom.artefacts.iterator();
+		while(iter.hasNext()){
+			Artefact arte = iter.next();
+			if(arte.getRectangle().overlaps(this.rectangle)){
+				arte.action(this);
+				iter.remove();
+				arte.dispose();
+			}
+		}
+	}
 
 //	private void jump(){
 //		
@@ -132,5 +142,21 @@ public class Ninja extends People {
 //	
 	public Vector2 getPosition(){
 		return this.position;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
 	}
 }
