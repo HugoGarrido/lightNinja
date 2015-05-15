@@ -52,7 +52,7 @@ public class Gui {
 	public void showScore(Ninja ninja)
 	{
 		
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("ninjaFont.fnt"));
 		font.draw(batch, ninja.getScore().toString(), 20, 620);
 	}
 	
