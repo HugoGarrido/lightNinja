@@ -6,19 +6,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-public class Menu implements Screen{
+public class GameOver implements Screen{
     
 	
 	final LightNinjaGame game;
 
     public OrthographicCamera camera;
-    private Texture bg;
+    
 
-    public Menu(final LightNinjaGame gam) {
+    public GameOver(final LightNinjaGame gam) {
         game = gam;
         
-        bg = new Texture(Gdx.files.internal("background_menu.jpg"));
-
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 768);
 
@@ -27,20 +25,19 @@ public class Menu implements Screen{
 	
 	@Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.batch.draw(bg, 0,0);
-        game.font.draw(game.batch, "Light Ninja", 1024/2 - 50, 768/2);
-        game.font.draw(game.batch, "Tap anywhere to begin", 1024/2 -50, 768/2 - 50);
+        game.font.draw(game.batch, "Game Over", 1024/2 - 50, 768/2);
+        game.font.draw(game.batch, "Tap anywhere to continue", 1024/2 -50, 768/2 - 50);
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
-            game.setScreen(new LightNinja(game));
+            game.setScreen(new Menu(game));
             dispose();
         }
     }
