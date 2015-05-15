@@ -42,12 +42,21 @@ public class Ennemi extends People{
     
     private Texture texEnnemi;
    
-    private float orientation = 1;
+    private float orientation = -1;
+    private boolean detected = false;
     
     float stateTime;
 
 	
-	public Ennemi(){}
+	public Ennemi(int posX, int posY){
+		super.rectangle = new Rectangle();
+		super.rectangle.x = posX;
+		super.rectangle.y = posY;
+		super.rectangle.width = 2;
+		super.rectangle.height = 2;
+		super.position = new Vector2(super.rectangle.x, super.rectangle.y);
+		
+	}
 	
 	public int getLife()
 	{
@@ -55,20 +64,12 @@ public class Ennemi extends People{
 	}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
-		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
 		this.batch = batch;
 		this.camera = camera;
 		
 		texEnnemi = new Texture(Gdx.files.internal("deamon.png"));       
         
         stateTime = 0f;
-		
-		super.rectangle = new Rectangle();
-		super.rectangle.x = 25;
-		super.rectangle.y = 22;
-		super.rectangle.width = 2;
-		super.rectangle.height = 2;
-		super.position = new Vector2(super.rectangle.x, super.rectangle.y);
 		
 		setShurikens(new Array<Shuriken>());
 		
@@ -101,13 +102,10 @@ public class Ennemi extends People{
 		stateTime += Gdx.graphics.getDeltaTime();
 		
 		//Attack
-		if(cptFrame % 40 == 0){	
-			attack(super.rectangle.x + super.rectangle.getWidth() + 20, super.rectangle.y + super.rectangle.getHeight());
+		if(cptFrame % 40 == 0 && isDetected()){	
+			attack(super.rectangle.x + super.rectangle.getWidth() + 20 * getOrientation(), super.rectangle.y + super.rectangle.getHeight());
 		}
 		cptFrame++;
-		
-		checkShurikens();
-		
 
 		//Deplacement
 //		if (orientation == 1){
@@ -134,22 +132,6 @@ public class Ennemi extends People{
 		super.updateRectangle();
 		
 	}
-	
-	public void checkShurikens(){
-		Iterator<Shuriken> iter = ninja.getShurikens().iterator();
-		while(iter.hasNext()){
-			Shuriken shrk = iter.next();
-			if(shrk.getRectangle().overlaps(this.rectangle)){
-				this.life--;
-				iter.remove();
-				shrk.dispose();
-			}
-		}
-		if (life == 0){
-			ninja.setScore(ninja.getScore());
-			System.out.println("ennemi mort");
-		}
-	}
 
 	private void attack(float destX, float destY) {
 		Shuriken shuriken = new Shuriken();
@@ -172,6 +154,22 @@ public class Ennemi extends People{
 
 	public void setShurikens(Array<Shuriken> shurikens) {
 		this.shurikens = shurikens;
+	}
+
+	public float getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(float orientation) {
+		this.orientation = orientation;
+	}
+
+	public boolean isDetected() {
+		return detected;
+	}
+
+	public void setDetected(boolean detected) {
+		this.detected = detected;
 	}
 
 }

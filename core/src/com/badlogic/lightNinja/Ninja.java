@@ -22,7 +22,7 @@ public class Ninja extends People {
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
-	private int detectionZone;
+	private int detectionZone = 5;
 	private Ennemi ennemi;
 	private boolean lighted;
 	
@@ -72,11 +72,10 @@ public class Ninja extends People {
 		return score;
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room, Ennemi ennemi){
+	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
 		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
 		this.batch = batch;
 		this.camera = camera;
-		this.ennemi = ennemi;
 		
 		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
 		
@@ -101,8 +100,6 @@ public class Ninja extends People {
         		walkFramesRight[indexW++] = tmp[i][j];
         	}
         }
-        
-       
         
         for(int i = 2 ; i < 3 ; i++){
         	for(int j = 0; j < 5; j++){
@@ -189,7 +186,7 @@ public class Ninja extends People {
 		}
 		
 		checkArtefact();
-		checkShurikens(ennemi);
+		checkEnnemis();
 		
 		if(super.getJumpStatus() == true){
 			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
@@ -256,6 +253,37 @@ public class Ninja extends People {
 				this.life--;
 				iter.remove();
 				shrk.dispose();
+			}
+		}
+	}
+	
+	public void checkEnnemis(){
+		Iterator<Ennemi> iterEn = currentRoom.ennemis.iterator();
+		while(iterEn.hasNext()){
+			Ennemi en = iterEn.next();
+			//check if the ninja is on the right or on the left to the ennemi
+			if (en.rectangle.x - this.rectangle.x > 0){
+				en.setOrientation(-1);
+			}
+			else en.setOrientation(1);
+			//detection
+			if (Math.abs(en.rectangle.x - this.rectangle.x) < 5 ){
+				en.setDetected(true);
+			} else en.setDetected(false);
+			
+			checkShurikens(en);
+			Iterator<Shuriken> iterSh = shurikens.iterator();
+			while(iterSh.hasNext()){
+				Shuriken shrk = iterSh.next();
+				if(shrk.getRectangle().overlaps(en.rectangle)){
+					en.setLife(en.getLife() - 1);
+					iterSh.remove();
+					shrk.dispose();
+				}
+			}
+			if (en.getLife() == 0){
+				score += 60;
+				iterEn.remove();
 			}
 		}
 	}
