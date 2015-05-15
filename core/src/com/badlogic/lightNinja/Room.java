@@ -21,11 +21,13 @@ public class Room extends Constante{
 	protected Array<Platform> platforms;
 	protected Array<MobilePlatform> mobilePlatforms;
 	protected Array<Artefact> artefacts;
+	protected Array<Ennemi> ennemis;
 	
 	public Room(){
 		platforms = new Array<Platform>();
 		mobilePlatforms = new Array<MobilePlatform>();
 		artefacts = new Array<Artefact>();
+		ennemis = new Array<Ennemi>();
 		
 		elmtMatrix = new int[Constante.ROOM_WIDTH][Constante.ROOM_HEIGHT];
 		for(int i=0; i< Constante.ROOM_WIDTH; i++){
@@ -46,7 +48,7 @@ public class Room extends Constante{
 		
 		this.batch = batch;
 		this.camera = camera;
-		fond = new Texture(Gdx.files.internal("background_night.png"));
+		fond = new Texture(Gdx.files.internal("fond_new.png"));
 		
 		Platform p1 = new Platform(Constante.ROOM_HEIGHT, 1, 0, 0);
 		addPlatform(p1);

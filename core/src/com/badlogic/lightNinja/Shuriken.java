@@ -52,7 +52,6 @@ public class Shuriken{
 		//Calculer le vecteur qui va du ninja à la destination.
 		//orientation = dest - center
 		orientation = dest.add(center.scl(-1));
-		orientation.scl(1, -1);
 		
 		//Normaliser orientation
 		//Vector2 unit = orientation.scl(1/(dest.dst(center)));

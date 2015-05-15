@@ -13,6 +13,7 @@ public class LightNinja extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private SpriteBatch batch_fixed;
 	private Ninja ninja;
+	private Ennemi ennemi;
 	private Room room;
 	private Gui gui;
 	
@@ -31,8 +32,13 @@ public class LightNinja extends ApplicationAdapter {
 		room = new Room();
 		room.create(batch, camera);
 		
+		ennemi = new Ennemi();
+		ennemi.create(batch, camera, room);
+		
 		ninja = new Ninja();
-		ninja.create(batch, camera, room);
+		ninja.create(batch, camera, room, ennemi);
+		
+		ennemi.setNinja(ninja);
 		
 		gui = new Gui();
 		gui.create(batch_fixed, camera, room);
@@ -70,6 +76,8 @@ public class LightNinja extends ApplicationAdapter {
 		batch.begin();
 		    room.draw();
 			ninja.draw();
+			if (ennemi.getLife() > 0)
+				ennemi.draw();
 		batch.end();
 		
 		batch_fixed.begin();
@@ -80,6 +88,9 @@ public class LightNinja extends ApplicationAdapter {
 		ninja.render();
 		room.render();
 		gui.render();
+		
+		if (ennemi.getLife() > 0)
+			ennemi.render();
 	}
 	
 	public void dispose(){
