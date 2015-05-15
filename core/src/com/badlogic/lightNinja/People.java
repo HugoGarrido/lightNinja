@@ -28,7 +28,7 @@ public abstract class People {
 		this.jump = new Vector2(0,0);
 		this.gravity = 0.1f;
 		this.walkStep = 0.1f;
-		this.jumpStep = 1.0f;
+		this.jumpStep = 1.1f;
 		this.isLanded = false;
 		this.isJumping = false;
 	}
@@ -121,7 +121,7 @@ public abstract class People {
 //				System.out.println("right ? " + currentRoom.mobilePlatforms.get(0).getRight());
 //				System.out.println("idPlat : " + idPlat);
 				
-				//bug ici : id donné en dur pour le bien de tous
+				//bug ici : id donnï¿½ en dur pour le bien de tous
 				if (currentRoom.mobilePlatforms.get(0).getVertical()){
 					if (currentRoom.mobilePlatforms.get(0).getRight()){
 						moveDown();
@@ -164,5 +164,12 @@ public abstract class People {
 		this.rectangle.y = this.position.y;
 		
 		
+	}
+	
+	public boolean getJumpStatus(){
+		return this.isJumping;
+	}
+	public boolean getLandedStatus(){
+		return this.isLanded;
 	}
 }

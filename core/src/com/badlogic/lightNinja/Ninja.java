@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -31,13 +33,93 @@ public class Ninja extends People {
 	private Array<Shuriken> shurikens;
 	
 	
+	private static final int FRAME_COLS = 6;
+    private static final int FRAME_ROWS = 3;
+    
+    private Animation walkAnimation;
+    private Animation stillAnimation;
+    private Animation jumpAnimation;
+    private Animation fallingAnimation;
+    
+    private Texture spriteSheet;
+    
+    private TextureRegion[] walkFramesRight;
+    private TextureRegion[] walkFramesLeft;
+    private TextureRegion[] jumpFrames;
+    private TextureRegion[] stillFrames;
+    private TextureRegion[] fallingFrame;
+    private TextureRegion currentFrame;
+
+    private float orientation = 1;
+    
+    float stateTime;
+
+	
 	public Ninja(){}
 	
+	public int getLife()
+	{
+		return this.life;
+	}
+	public int getShuriken()
+	{
+		return this.shurikenJauge;
+	}
+	public Integer getScore()
+	{
+		Integer score = this.score;
+		return score;
+	}
+	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
-		ninjaImage = new Texture(Gdx.files.internal("bucket.png"));
+		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
 		this.batch = batch;
 		this.camera = camera;
-
+		
+		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
+		
+        TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth()/FRAME_COLS, spriteSheet.getHeight()/FRAME_ROWS);
+        
+        TextureRegion[][] tmpFlip = tmp.clone();
+       
+        
+        walkFramesRight = new TextureRegion[6 * 1];
+        walkFramesLeft = new TextureRegion[6 * 1];
+        jumpFrames = new TextureRegion[5 * 1];
+        stillFrames = new TextureRegion[1 * 1];
+        fallingFrame = new TextureRegion[1];
+        
+        int indexW = 0;
+        int indexJ = 0;
+        int indexS = 0;
+        
+        //still
+        for(int i = 1 ; i < 2 ; i++){
+        	for(int j = 0; j < 6; j++){
+        		walkFramesRight[indexW++] = tmp[i][j];
+        	}
+        }
+        
+       
+        
+        for(int i = 2 ; i < 3 ; i++){
+        	for(int j = 0; j < 5; j++){
+        		jumpFrames[indexJ++] = tmp[i][j];
+        	}
+        }
+        
+        stillFrames[0] = tmp[0][0];
+        fallingFrame[0] = tmp[2][2];
+        
+        walkAnimation = new Animation(0.080f, walkFramesRight);
+        fallingAnimation = new Animation(0.080f, fallingFrame);
+       
+        jumpAnimation = new Animation(2.00f, jumpFrames);
+        stillAnimation = new Animation(0.080f, stillFrames);
+        stateTime = 0f;
+		
+		
+		super.rectangle = new Rectangle();
 		super.rectangle.x = 9;
 		super.rectangle.y = 10;
 		super.rectangle.width = 2;
@@ -48,11 +130,15 @@ public class Ninja extends People {
 		
 		super.currentRoom = room;
 		
+		currentFrame = stillAnimation.getKeyFrame(stateTime, true);
+		
 	}
 	
 	public void draw(){
 		
-		batch.draw(ninjaImage, super.rectangle.x*Constante.LENGHT_BOX, super.rectangle.y*Constante.LENGHT_BOX);
+		batch.draw(currentFrame, super.rectangle.x*Constante.LENGHT_BOX, super.rectangle.y*Constante.LENGHT_BOX, 
+				32, 32, 64 ,64 , 
+				1, orientation, -90, false);
 		
 		if(shurikens.size != 0){
 			for(Shuriken shrk : shurikens){
@@ -68,6 +154,8 @@ public class Ninja extends People {
 	
 	public void render(){
 		float currentY = 0;
+	
+		stateTime += Gdx.graphics.getDeltaTime();
 		
 		//Attack
 		if(Gdx.input.justTouched()){	
@@ -76,21 +164,34 @@ public class Ninja extends People {
 		
 		//Deplacement
 		if(Gdx.input.isKeyPressed(Keys.LEFT)){
+			this.orientation = -1;
 			super.moveLeft();
+			currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+			this.orientation = 1;
 			super.moveRight();
+			currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			super.jump();
+			//currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+		}
+		
+		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
+			currentFrame = stillAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		checkArtefact();
-//		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
-//			super.stay();
-//		}
+		
+		if(super.getJumpStatus() == true){
+			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+		}
+		if(super.getLandedStatus() == false){
+			currentFrame = fallingAnimation.getKeyFrame(stateTime, true);
+		}
 		
 		Iterator<Shuriken> iter = shurikens.iterator();
 		while(iter.hasNext()){
@@ -103,12 +204,12 @@ public class Ninja extends People {
 		}
 		
 		super.computePosition();
-		updateRectangle();
+		super.updateRectangle();
 		
 	}
 	
 	public void dispose(){
-		ninjaImage.dispose();
+		spriteSheet.dispose();
 	}
 
 	private void attack(float destX, float destY) {
@@ -131,29 +232,12 @@ public class Ninja extends People {
 		}
 	}
 
-//	private void jump(){
-//		
-//		super.position.y += isJumping;
-//		isJumping -= fallStep;
-//		if (isJumping <= 0)
-//			isJumping = 0;
-//		
-//	}
-//	
 	public Vector2 getPosition(){
 		return this.position;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	public int getLife() {
-		return life;
 	}
 
 	public void setLife(int life) {
