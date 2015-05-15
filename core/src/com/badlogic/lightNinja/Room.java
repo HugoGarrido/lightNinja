@@ -90,18 +90,21 @@ public class Room extends Constante{
 	public void addArtefacts(){
 		for (int i = 0; i < Constante.ROOM_WIDTH; ++i){
 			Artefact arte;
-			if (i % 10 == 0){
+			if (i % 10 == 0 && elmtMatrix[i][2] == 0){
 				arte = new Artefact(i, 2, TypeArtefact.LIFE);
 				elmtMatrix[i][2] = 3;
 				idMatrix[i][2] = arte.getId();
+				arte.create(batch, camera, this);
+				artefacts.add(arte);
 			}
-			else {
+			else if (elmtMatrix[i][2] == 0) {
 				arte = new Artefact(i, 2, TypeArtefact.POINT);
 				elmtMatrix[i][2] = 4;
 				idMatrix[i][2] = arte.getId();
+				arte.create(batch, camera, this);
+				artefacts.add(arte);
 			}
-			arte.create(batch, camera, this);
-			artefacts.add(arte);
+			
 
 		}
 	}

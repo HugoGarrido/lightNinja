@@ -11,6 +11,7 @@ public class LightNinja extends ApplicationAdapter {
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	private SpriteBatch batch_fixed;
 	private Ninja ninja;
 	private Room room;
 	private Gui gui;
@@ -25,6 +26,7 @@ public class LightNinja extends ApplicationAdapter {
 		camera.setToOrtho(false, 1024, 768);
 		
 		batch = new SpriteBatch();
+		batch_fixed = new SpriteBatch();
 
 		room = new Room();
 		room.create(batch, camera);
@@ -33,7 +35,7 @@ public class LightNinja extends ApplicationAdapter {
 		ninja.create(batch, camera, room);
 		
 		gui = new Gui();
-		gui.create(batch, camera, room);
+		gui.create(batch_fixed, camera, room);
 		
 	}
 
@@ -68,8 +70,11 @@ public class LightNinja extends ApplicationAdapter {
 		batch.begin();
 		    room.draw();
 			ninja.draw();
-			gui.draw(ninja);
 		batch.end();
+		
+		batch_fixed.begin();
+			gui.draw(ninja);
+		batch_fixed.end();
 		
 		
 		ninja.render();
