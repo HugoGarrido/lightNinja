@@ -18,7 +18,7 @@ public class Ninja extends People {
 	
 	private int life;
 	private float speed;
-	private int score;
+	private int score = 12;
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
@@ -56,6 +56,20 @@ public class Ninja extends People {
 
 	
 	public Ninja(){}
+	
+	public int getLife()
+	{
+		return this.life;
+	}
+	public int getShuriken()
+	{
+		return this.shurikenJauge;
+	}
+	public Integer getScore()
+	{
+		Integer score = this.score;
+		return score;
+	}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
 		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));

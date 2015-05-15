@@ -13,6 +13,7 @@ public class LightNinja extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Ninja ninja;
 	private Room room;
+	private Gui gui;
 	
 	private float posCamX = 0;
 	private float posCamY = 0;
@@ -30,6 +31,9 @@ public class LightNinja extends ApplicationAdapter {
 		
 		ninja = new Ninja();
 		ninja.create(batch, camera, room);
+		
+		gui = new Gui();
+		gui.create(batch, camera, room);
 		
 	}
 
@@ -64,11 +68,13 @@ public class LightNinja extends ApplicationAdapter {
 		batch.begin();
 		    room.draw();
 			ninja.draw();
+			gui.draw(ninja);
 		batch.end();
 		
 		
 		ninja.render();
 		room.render();
+		gui.render();
 	}
 	
 	public void dispose(){
