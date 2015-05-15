@@ -53,8 +53,8 @@ public class Ninja extends People {
     private float orientation = 1;
     
     float stateTime;
-
-	
+    
+    
 	public Ninja(){}
 	
 	public int getLife()
@@ -71,10 +71,11 @@ public class Ninja extends People {
 		return score;
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
+	public void create(SpriteBatch batch, OrthographicCamera camera, Room room, EndGame end){
 		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
 		this.batch = batch;
 		this.camera = camera;
+		
 		
 		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
 		
@@ -193,6 +194,7 @@ public class Ninja extends People {
 			currentFrame = fallingAnimation.getKeyFrame(stateTime, true);
 		}
 		
+		
 		Iterator<Shuriken> iter = shurikens.iterator();
 		while(iter.hasNext()){
 			Shuriken shrkn = iter.next();
@@ -231,6 +233,8 @@ public class Ninja extends People {
 			}
 		}
 	}
+	
+
 
 	public Vector2 getPosition(){
 		return this.position;
