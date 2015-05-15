@@ -16,9 +16,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Ninja extends People {
 	
-	private int life;
+	private int life = 10;
 	private float speed;
-	private int score;
+	private int score = 0;
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
@@ -56,6 +56,20 @@ public class Ninja extends People {
 
 	
 	public Ninja(){}
+	
+	public int getLife()
+	{
+		return this.life;
+	}
+	public int getShuriken()
+	{
+		return this.shurikenJauge;
+	}
+	public Integer getScore()
+	{
+		Integer score = this.score;
+		return score;
+	}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
 		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
@@ -118,17 +132,9 @@ public class Ninja extends People {
 		
 		currentFrame = stillAnimation.getKeyFrame(stateTime, true);
 		
-		
-		//super.walkStep = 0.1f;
-		//super.gravity = 0.1f;
-		
 	}
 	
 	public void draw(){
-		
-		//batch.draw(walkSheet, super.rectangle.x*Constante.LENGHT_BOX, super.rectangle.y*Constante.LENGHT_BOX);
-		
-
 		
 		batch.draw(currentFrame, super.rectangle.x*Constante.LENGHT_BOX, super.rectangle.y*Constante.LENGHT_BOX, 
 				32, 32, 64 ,64 , 
@@ -178,6 +184,8 @@ public class Ninja extends People {
 			currentFrame = stillAnimation.getKeyFrame(stateTime, true);
 		}
 		
+		checkArtefact();
+		
 		if(super.getJumpStatus() == true){
 			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
 		}
@@ -212,7 +220,27 @@ public class Ninja extends People {
 		
 	}
 	
+	public void checkArtefact(){
+		Iterator<Artefact> iter = currentRoom.artefacts.iterator();
+		while(iter.hasNext()){
+			Artefact arte = iter.next();
+			if(arte.getRectangle().overlaps(this.rectangle)){
+				arte.action(this);
+				iter.remove();
+				arte.dispose();
+			}
+		}
+	}
+
 	public Vector2 getPosition(){
 		return this.position;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
 	}
 }

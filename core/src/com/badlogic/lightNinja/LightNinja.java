@@ -14,23 +14,23 @@ public class LightNinja implements Screen {
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
+	private SpriteBatch batch_fixed;
 	private Ninja ninja;
 	private Room room;
+	private Gui gui;
 	
 	private float posCamX = 0;
 	private float posCamY = 0;
 	
 	LightNinja(LightNinjaGame gam){
 		this.game = gam;
-	//}
-	
-	//@Override
-	//public void create(){
+
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
 		
 		batch = new SpriteBatch();
+		batch_fixed = new SpriteBatch();
 
 		room = new Room();
 		room.create(batch, camera);
@@ -38,7 +38,10 @@ public class LightNinja implements Screen {
 		ninja = new Ninja();
 		ninja.create(batch, camera, room);
 		
-		//setScreen(new Menu(this));
+
+		gui = new Gui();
+		gui.create(batch_fixed, camera, room);
+		
 	}
 
 	@Override
@@ -74,9 +77,14 @@ public class LightNinja implements Screen {
 			ninja.draw();
 		batch.end();
 		
+		batch_fixed.begin();
+			gui.draw(ninja);
+		batch_fixed.end();
+		
 		
 		ninja.render();
 		room.render();
+		gui.render();
 	}
 	
 	@Override
