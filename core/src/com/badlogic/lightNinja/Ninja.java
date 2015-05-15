@@ -39,6 +39,7 @@ public class Ninja extends People {
     private Animation walkAnimation;
     private Animation stillAnimation;
     private Animation jumpAnimation;
+    private Animation fallingAnimation;
     
     private Texture spriteSheet;
     
@@ -46,6 +47,7 @@ public class Ninja extends People {
     private TextureRegion[] walkFramesLeft;
     private TextureRegion[] jumpFrames;
     private TextureRegion[] stillFrames;
+    private TextureRegion[] fallingFrame;
     private TextureRegion currentFrame;
 
     private float orientation = 1;
@@ -56,7 +58,7 @@ public class Ninja extends People {
 	public Ninja(){}
 	
 	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
-		ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
+		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
 		this.batch = batch;
 		this.camera = camera;
 		
@@ -71,6 +73,7 @@ public class Ninja extends People {
         walkFramesLeft = new TextureRegion[6 * 1];
         jumpFrames = new TextureRegion[5 * 1];
         stillFrames = new TextureRegion[1 * 1];
+        fallingFrame = new TextureRegion[1];
         
         int indexW = 0;
         int indexJ = 0;
@@ -92,10 +95,12 @@ public class Ninja extends People {
         }
         
         stillFrames[0] = tmp[0][0];
+        fallingFrame[0] = tmp[2][2];
         
         walkAnimation = new Animation(0.080f, walkFramesRight);
+        fallingAnimation = new Animation(0.080f, fallingFrame);
        
-        jumpAnimation = new Animation(0.080f, jumpFrames);
+        jumpAnimation = new Animation(2.00f, jumpFrames);
         stillAnimation = new Animation(0.080f, stillFrames);
         stateTime = 0f;
 		
@@ -166,11 +171,18 @@ public class Ninja extends People {
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			super.jump();
-			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+			//currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
 			currentFrame = stillAnimation.getKeyFrame(stateTime, true);
+		}
+		
+		if(super.getJumpStatus() == true){
+			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
+		}
+		if(super.getLandedStatus() == false){
+			currentFrame = fallingAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		Iterator<Shuriken> iter = shurikens.iterator();
@@ -189,7 +201,7 @@ public class Ninja extends People {
 	}
 	
 	public void dispose(){
-		ninjaImage.dispose();
+		spriteSheet.dispose();
 	}
 
 	private void attack(float destX, float destY) {
@@ -199,16 +211,7 @@ public class Ninja extends People {
 		shurikens.add(shuriken);
 		
 	}
-
-//	private void jump(){
-//		
-//		super.position.y += isJumping;
-//		isJumping -= fallStep;
-//		if (isJumping <= 0)
-//			isJumping = 0;
-//		
-//	}
-//	
+	
 	public Vector2 getPosition(){
 		return this.position;
 	}
