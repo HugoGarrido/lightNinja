@@ -20,10 +20,12 @@ public class Room extends Constante{
 	
 	protected Array<Platform> platforms;
 	protected Array<MobilePlatform> mobilePlatforms;
+	protected Array<Artefact> artefacts;
 	
 	public Room(){
 		platforms = new Array<Platform>();
 		mobilePlatforms = new Array<MobilePlatform>();
+		artefacts = new Array<Artefact>();
 		
 		elmtMatrix = new int[Constante.ROOM_WIDTH][Constante.ROOM_HEIGHT];
 		for(int i=0; i< Constante.ROOM_WIDTH; i++){
@@ -82,6 +84,26 @@ public class Room extends Constante{
 		Platform p12 = new Platform(5, 1, 46, 11);
 		addPlatform(p12);
 		
+		addArtefacts();
+	}
+	
+	public void addArtefacts(){
+		for (int i = 0; i < Constante.ROOM_WIDTH; ++i){
+			Artefact arte;
+			if (i % 10 == 0){
+				arte = new Artefact(i, 2, TypeArtefact.LIFE);
+				elmtMatrix[i][2] = 3;
+				idMatrix[i][2] = arte.getId();
+			}
+			else {
+				arte = new Artefact(i, 2, TypeArtefact.POINT);
+				elmtMatrix[i][2] = 4;
+				idMatrix[i][2] = arte.getId();
+			}
+			arte.create(batch, camera, this);
+			artefacts.add(arte);
+
+		}
 	}
 	
 	public void addMobilePlatform(MobilePlatform pMob){
@@ -109,7 +131,6 @@ public class Room extends Constante{
 	public void addPlatform(Platform p){
 		p.create(batch, camera);
 		
-		//Voir si c'est encore utile, pour l'instant on utilise pas le tableau de platform
 		platforms.add(p);
 		
 		for(int i = 0; i < p.width; i++ ){
@@ -142,6 +163,9 @@ public class Room extends Constante{
 		for (MobilePlatform p : mobilePlatforms){ 
 			p.draw();
 		}
+		for (Artefact a : artefacts){ 
+			a.draw();
+		}
 	}
 	
 	public void render(){
@@ -151,6 +175,9 @@ public class Room extends Constante{
 		}
 		for (MobilePlatform p : mobilePlatforms){ 
 			p.render();
+		}
+		for (Artefact a : artefacts){ 
+			a.render();
 		}
 	}
 	

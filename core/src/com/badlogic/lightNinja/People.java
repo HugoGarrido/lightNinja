@@ -36,9 +36,9 @@ public abstract class People {
 	public void gravity(){
 		if(this.position.x > 1 && this.position.x <= Constante.ROOM_WIDTH 
 			&& this.position.y > 1 && this.position.y <= Constante.ROOM_HEIGHT 
-			&& currentRoom.elmtMatrix[(int)(this.position.x)][(int)(this.position.y - this.gravity)] == 0
-			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] == 0
-			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth())][(int)(this.position.y - this.gravity)] == 0){
+			&& currentRoom.elmtMatrix[(int)(this.position.x)][(int)(this.position.y - this.gravity)] != 1
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth()/2)][(int)(this.position.y - this.gravity)] != 1
+			&& currentRoom.elmtMatrix[(int)(this.position.x + rectangle.getWidth())][(int)(this.position.y - this.gravity)] != 1){
 				this.direction.y -= this.gravity;
 				this.isLanded = false;
 			}
@@ -51,8 +51,8 @@ public abstract class People {
 	public void moveLeft(){
 		if(position.x > 0 && position.x <= Constante.ROOM_WIDTH 
 			&& position.y > 0 && position.y <= Constante.ROOM_HEIGHT
-			&& currentRoom.elmtMatrix[(int)(position.x - walkStep)][Math.round(position.y)] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x - walkStep)][Math.round(position.y + rectangle.getHeight() / 2) ] == 0){
+			&& currentRoom.elmtMatrix[(int)(position.x - walkStep)][Math.round(position.y)] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x - walkStep)][Math.round(position.y + rectangle.getHeight() / 2) ] != 1){
 				this.direction.x -= this.walkStep;
 		}
 	}
@@ -60,22 +60,22 @@ public abstract class People {
 	public void moveRight(){
 		if(position.x > 0 && position.x <= Constante.ROOM_WIDTH 
 			&& position.y > 0 && position.y <= Constante.ROOM_HEIGHT
-			&&currentRoom.elmtMatrix[(int)(position.x + walkStep + rectangle.getWidth())][Math.round(position.y)] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + walkStep + rectangle.getWidth())][Math.round(position.y + rectangle.getHeight() / 2) ] == 0){
+			&& currentRoom.elmtMatrix[(int)(position.x + walkStep + rectangle.getWidth())][Math.round(position.y)] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x + walkStep + rectangle.getWidth())][Math.round(position.y + rectangle.getHeight() / 2) ] != 1){
 				this.direction.x += this.walkStep;
 		}
 	}
 	
 	public void moveUp(){
-		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + walkStep + rectangle.getHeight())] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + walkStep + rectangle.getHeight())] == 0) {
+		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + walkStep + rectangle.getHeight())] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + walkStep + rectangle.getHeight())] != 1) {
 				this.direction.y += this.walkStep;
 		}
 	}
 	
 	public void moveDown(){
-		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y - walkStep)] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y - walkStep)] == 0) {
+		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y - walkStep)] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y - walkStep)] != 1) {
 				this.direction.y -= this.walkStep;
 		}
 	}
@@ -89,9 +89,9 @@ public abstract class People {
 	}
 	
 	public void jumpUp(){
-		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + walkStep + rectangle.getHeight())] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth()/2)][(int)(position.y + walkStep + rectangle.getHeight())] == 0
-			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + walkStep + rectangle.getHeight())] == 0) {
+		if(currentRoom.elmtMatrix[(int)(position.x)][(int)(position.y + walkStep + rectangle.getHeight())] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth()/2)][(int)(position.y + walkStep + rectangle.getHeight())] != 1
+			&& currentRoom.elmtMatrix[(int)(position.x + rectangle.getWidth())][(int)(position.y + walkStep + rectangle.getHeight())] != 1) {
 				this.direction.y += this.jumping;
 		}
 		else{
