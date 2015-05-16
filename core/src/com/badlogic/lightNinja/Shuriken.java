@@ -1,19 +1,17 @@
 package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Shuriken{
-	private long reach = 1500;
 	
 	private Rectangle shuriken;
 	private Texture projectileImage;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
+
 	
 	private float orientationNinja = -1;
 	
@@ -21,14 +19,13 @@ public class Shuriken{
 	public Vector2 unit  = new Vector2();
 	public long startTime;
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, float posX, float posY, float destX, float destY, long startTime, boolean shurikenOrFire, float orientationNinja){
+	public void create(SpriteBatch batch, float posX, float posY, float destX, float destY, long startTime, boolean shurikenOrFire, float orientationNinja){
 		if (shurikenOrFire == true){
 			this.projectileImage = new Texture(Gdx.files.internal("shuriken.png"));
 		}
 		else this.projectileImage = new Texture(Gdx.files.internal("feu.png"));
 		
 		this.batch = batch;
-		this.camera = camera;
 		this.orientationNinja = orientationNinja;
 		
 		this.shuriken = new Rectangle();
@@ -87,7 +84,6 @@ public class Shuriken{
 		Vector2 stepVect = unit.cpy().scl(step, step);
 				
 		//Bouger le shuriken
-		
 		shuriken.setCenter(center.cpy().add(stepVect));
 
 	}

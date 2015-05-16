@@ -13,7 +13,7 @@ public class Room extends Constante{
 	private OrthographicCamera camera;
 	
 	private Texture fond;
-	private int[][] lightMatrix;
+	//private int[][] lightMatrix;
 	protected int[][] elmtMatrix;
 	protected int[][] idMatrix;
 	
@@ -99,7 +99,7 @@ public class Room extends Constante{
 	public void addEnnemis(){
 		for (int i = 0; i < 6; i++){
 			Ennemi ennemi = new Ennemi(i * 5 + 5, 20);
-			ennemi.create(batch, camera, this);
+			ennemi.create(batch, this);
 			ennemis.add(ennemi);
 		}
 	}
@@ -125,7 +125,7 @@ public class Room extends Constante{
 	}
 	
 	public void addMobilePlatform(MobilePlatform pMob){
-		pMob.create(batch, camera);
+		pMob.create(batch);
 		
 		mobilePlatforms.add(pMob);
 		if (pMob.getVertical()){
@@ -147,7 +147,7 @@ public class Room extends Constante{
 	
 	
 	public void addPlatform(Platform p){
-		p.create(batch, camera);
+		p.create(batch);
 		
 		platforms.add(p);
 		

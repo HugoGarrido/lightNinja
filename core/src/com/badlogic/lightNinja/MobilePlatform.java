@@ -1,7 +1,6 @@
 package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 
 public class MobilePlatform extends Platform{
 	
@@ -52,8 +51,6 @@ public class MobilePlatform extends Platform{
 	
 	public void render(){
 		
-		int cpt = 0;
-		
 		if (vertical){
 			if((int)super.posY <= posA) right = true;
 			else if ((int)super.posY >= posB) right = false;
@@ -68,29 +65,6 @@ public class MobilePlatform extends Platform{
 			if (right) moveX(1);
 			else moveX(-1);
 		}
-		
-//		for (Box box : super.boxes) {
-//			
-//			if (vertical){
-//				if (cpt == 0){
-//					if (box.getPosY() <= posA * LENGHT_BOX) right = true;
-//					else if (box.getPosY() >= posB * LENGHT_BOX) right = false;
-//				}
-//				if (right) box.moveY(200 * Gdx.graphics.getDeltaTime());
-//				else box.moveY( - 200 * Gdx.graphics.getDeltaTime());
-//			}
-//			else {
-//				if (cpt == 0){
-//					if (box.getPosX() <= posA * LENGHT_BOX) right = true;
-//					else if (box.getPosX() >= posB * LENGHT_BOX) right = false;
-//				}
-//				if (right) box.moveX(200 * Gdx.graphics.getDeltaTime());
-//				else box.moveX( - 200 * Gdx.graphics.getDeltaTime());
-//			}
-//			++cpt;
-//		}		
-		
-		
 	}
 
 	

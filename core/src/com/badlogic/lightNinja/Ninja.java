@@ -5,7 +5,6 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,17 +17,13 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class Ninja extends People {
 	
 	private int life = 10;
-	private float speed;
 	private int score = 0;
-	private int strenghtPoint;
 	private int shurikenJauge;
 	
-	private int detectionZone = 5;
-	private Ennemi ennemi;
-	private boolean lighted;
+
+	//private boolean lighted;
 	
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 	
 	private long lifespanSh = 150000000L;
 	private Array<Shuriken> shurikens;
@@ -45,7 +40,6 @@ public class Ninja extends People {
     private Texture spriteSheet;
     
     private TextureRegion[] walkFramesRight;
-    private TextureRegion[] walkFramesLeft;
     private TextureRegion[] jumpFrames;
     private TextureRegion[] stillFrames;
     private TextureRegion[] fallingFrame;
@@ -76,27 +70,22 @@ public class Ninja extends People {
 		return score;
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room, EndGame end){
+	public void create(SpriteBatch batch, Room room, EndGame end){
 		this.batch = batch;
-		this.camera = camera;
 		
 		
 		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
 		
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth()/FRAME_COLS, spriteSheet.getHeight()/FRAME_ROWS);
-        
-        TextureRegion[][] tmpFlip = tmp.clone();
        
         
         walkFramesRight = new TextureRegion[6 * 1];
-        walkFramesLeft = new TextureRegion[6 * 1];
         jumpFrames = new TextureRegion[5 * 1];
         stillFrames = new TextureRegion[1 * 1];
         fallingFrame = new TextureRegion[1];
         
         int indexW = 0;
         int indexJ = 0;
-        int indexS = 0;
         
         //still
         for(int i = 1 ; i < 2 ; i++){
@@ -161,7 +150,6 @@ public class Ninja extends People {
 	
 	
 	public void render(){
-		float currentY = 0;
 	
 		stateTime += Gdx.graphics.getDeltaTime();
 		
@@ -232,17 +220,12 @@ public class Ninja extends People {
 	private void attack(float destX, float destY) {
 		
 		Shuriken shuriken = new Shuriken();
+
 		
-//		float testX = 0 + camera.position.x - 512;
-//		float testY = 0 + camera.position.y - 388;
-//		System.out.println("test :" + testX + ", " + testY);
-		
-		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, 
+		shuriken.create(batch, super.rectangle.x + super.rectangle.getWidth()/2, 
 				super.rectangle.y + super.rectangle.getHeight()/2,
 				destX,
 				destY,
-//				(destX + camera.position.x) / Constante.LENGHT_BOX , 
-//				(destY + camera.position.y) / Constante.LENGHT_BOX , 
 				TimeUtils.nanoTime(), true, orientation);		
 		shurikens.add(shuriken);
 		soundShuriken.play(1.0f);

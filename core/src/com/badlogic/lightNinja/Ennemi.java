@@ -3,13 +3,9 @@ package com.badlogic.lightNinja;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -19,27 +15,13 @@ public class Ennemi extends People{
 
 	private int life = 3;
 	
-	private int detectionZone;
-	private boolean lighted;
-	private Ninja ninja;
-	
-	private Texture ninjaImage;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 	
 	private long lifespanSh = 150000000L;
 	private Array<Shuriken> shurikens;
 	
 	private int cptFrame = 0;
-	
-	
-	private static final int FRAME_COLS = 6;
-    private static final int FRAME_ROWS = 3;
     
-    private Animation walkAnimation;
-    private Animation stillAnimation;
-    private Animation jumpAnimation;
-    private Animation fallingAnimation;
     
     private Texture texEnnemi;
    
@@ -65,9 +47,8 @@ public class Ennemi extends People{
 		return this.life;
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
+	public void create(SpriteBatch batch, Room room){
 		this.batch = batch;
-		this.camera = camera;
 		
 		texEnnemi = new Texture(Gdx.files.internal("deamon.png"));       
         
@@ -80,9 +61,6 @@ public class Ennemi extends People{
 		soundAttack = Gdx.audio.newSound(Gdx.files.internal("sound/fireball.wav"));
 	}
 	
-	public void setNinja(Ninja ninja){
-		this.ninja = ninja;
-	}
 	
 	public void draw(){
 		
@@ -109,17 +87,6 @@ public class Ennemi extends People{
 			attack(super.rectangle.x + super.rectangle.getWidth() + 20 * getOrientation(), super.rectangle.y + super.rectangle.getHeight());
 		}
 		cptFrame++;
-
-		//Deplacement
-//		if (orientation == 1){
-//			super.moveLeft();
-//			currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-//		}
-//		
-//		if (orientation == -1){
-//			super.moveRight();
-//			currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-//		}
 		
 		Iterator<Shuriken> iter = getShurikens().iterator();
 		while(iter.hasNext()){
@@ -138,7 +105,7 @@ public class Ennemi extends People{
 
 	private void attack(float destX, float destY) {
 		Shuriken shuriken = new Shuriken();
-		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, 
+		shuriken.create(batch, super.rectangle.x + super.rectangle.getWidth()/2, 
 				super.rectangle.y + super.rectangle.getHeight()/2, destX, destY, TimeUtils.nanoTime(), false, orientation);		
 		getShurikens().add(shuriken);
 		soundAttack.play(0.6f);

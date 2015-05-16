@@ -117,11 +117,6 @@ public abstract class People {
 			&& this.position.y > 1 && this.position.y <= Constante.ROOM_HEIGHT 
 			&& currentRoom.elmtMatrix[(int) position.x][(int) (position.y - 0.5)] == 2){
 				int idPlat = currentRoom.elmtMatrix[(int) position.x][(int) (position.y - 0.5)]- 1;
-//				System.out.println("vertical ? " + currentRoom.mobilePlatforms.get(0).getVertical());
-//				System.out.println("right ? " + currentRoom.mobilePlatforms.get(0).getRight());
-//				System.out.println("idPlat : " + idPlat);
-				
-				//bug ici : id donn� en dur pour le bien de tous
 				if (currentRoom.mobilePlatforms.get(0).getVertical()){
 					if (currentRoom.mobilePlatforms.get(0).getRight()){
 						moveDown();
@@ -130,7 +125,7 @@ public abstract class People {
 				}
 				else if(currentRoom.mobilePlatforms.get(0).getRight()){
 					moveRight();
-					//System.out.println("lol");
+
 				}
 				else moveLeft();
 		}
@@ -148,7 +143,6 @@ public abstract class People {
 		gravity();
 		
 		//jump
-		//this.direction.add(jump);
 		if (isJumping){
 			decrementJump();
 		}

@@ -1,27 +1,23 @@
 package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 
 public class EndGame {
 	private Texture endGameImage;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 	
-	//private Intersector intersection;
 	private Rectangle rectangle;
 	
 	public EndGame(){
 		
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room, float posX, float posY){
+	public void create(SpriteBatch batch, Room room, float posX, float posY){
 		this.batch = batch;
-		this.camera = camera;
+		
 		
 		endGameImage = new Texture(Gdx.files.internal("portail.png"));
 		
