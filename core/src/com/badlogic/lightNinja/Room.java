@@ -121,8 +121,6 @@ public class Room extends Constante{
 				arte.create(batch, camera, this);
 				artefacts.add(arte);
 			}
-			
-
 		}
 	}
 	

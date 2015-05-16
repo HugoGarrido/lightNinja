@@ -30,7 +30,7 @@ public class Ninja extends People {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	private long lifespanSh = 1000000000L;
+	private long lifespanSh = 150000000L;
 	private Array<Shuriken> shurikens;
 	
 	
@@ -228,7 +228,7 @@ public class Ninja extends People {
 				destY,
 //				(destX + camera.position.x) / Constante.LENGHT_BOX , 
 //				(destY + camera.position.y) / Constante.LENGHT_BOX , 
-				TimeUtils.nanoTime());		
+				TimeUtils.nanoTime(), true, orientation);		
 		shurikens.add(shuriken);
 		
 	}

@@ -26,7 +26,7 @@ public class Ennemi extends People{
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	private long lifespanSh = 1000000000L;
+	private long lifespanSh = 150000000L;
 	private Array<Shuriken> shurikens;
 	
 	private int cptFrame = 0;
@@ -135,7 +135,8 @@ public class Ennemi extends People{
 
 	private void attack(float destX, float destY) {
 		Shuriken shuriken = new Shuriken();
-		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, super.rectangle.y + super.rectangle.getHeight()/2, destX, destY, TimeUtils.nanoTime());		
+		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, 
+				super.rectangle.y + super.rectangle.getHeight()/2, destX, destY, TimeUtils.nanoTime(), false, orientation);		
 		getShurikens().add(shuriken);
 		
 	}
