@@ -21,9 +21,9 @@ public class Shuriken{
 	
 	public void create(SpriteBatch batch, float posX, float posY, float destX, float destY, long startTime, boolean shurikenOrFire, float orientationNinja){
 		if (shurikenOrFire == true){
-			this.projectileImage = new Texture(Gdx.files.internal("shuriken.png"));
+			this.projectileImage = new Texture(Gdx.files.internal("sprites/shuriken.png"));
 		}
-		else this.projectileImage = new Texture(Gdx.files.internal("feu.png"));
+		else this.projectileImage = new Texture(Gdx.files.internal("sprites/feu.png"));
 		
 		this.batch = batch;
 		this.orientationNinja = orientationNinja;

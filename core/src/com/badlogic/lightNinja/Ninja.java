@@ -74,7 +74,7 @@ public class Ninja extends People {
 		this.batch = batch;
 		
 		
-		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
+		spriteSheet = new Texture(Gdx.files.internal("spriteSheet/dark_ninja_spritesheet.png"));
 		
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth()/FRAME_COLS, spriteSheet.getHeight()/FRAME_ROWS);
        
@@ -156,9 +156,7 @@ public class Ninja extends People {
 		//Attack
 		//if(Gdx.input.justTouched()){
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
-			//attack(Gdx.input.getX(), Gdx.input.getY());
 			attack(position.x + super.rectangle.width/2 + orientation, position.y + 1.5f);
-			//System.out.println(Gdx.input.getX() + " , " + Gdx.input.getY());
 		}
 		
 		//Deplacement

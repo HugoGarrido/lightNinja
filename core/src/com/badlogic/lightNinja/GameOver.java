@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 public class GameOver implements Screen{
     
@@ -12,12 +13,15 @@ public class GameOver implements Screen{
 	final LightNinjaGame game;
 
     public OrthographicCamera camera;
+    private Texture bg;
     
     private Sound soundGameOver;
     private Sound soundClick;
     
     public GameOver(final LightNinjaGame gam) {
         game = gam;
+        
+        this.bg = new Texture(Gdx.files.internal("bg/game_over.png"));
         
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 768);
@@ -38,6 +42,7 @@ public class GameOver implements Screen{
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
+        game.batch.draw(bg, 0,0);
         game.font.draw(game.batch, "Game Over", 1024/2 - 50, 768/2);
         game.font.draw(game.batch, "Tap anywhere to continue", 1024/2 -50, 768/2 - 50);
         game.batch.end();

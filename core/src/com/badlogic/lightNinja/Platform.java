@@ -45,8 +45,8 @@ public class Platform {
 	public void create(SpriteBatch batch){
 		
 		this.batch = batch;
-		LightedTex = new Texture(Gdx.files.internal("sol_3.png"));
-		DarkTex = new Texture(Gdx.files.internal("box_dark.png"));
+		LightedTex = new Texture(Gdx.files.internal("sprites/sol.png"));
+		DarkTex = new Texture(Gdx.files.internal("sprites/box_dark.png"));
 		
 		boxes = new Array<Box>();
 		ConstructBoxes();

@@ -50,7 +50,7 @@ public class Ennemi extends People{
 	public void create(SpriteBatch batch, Room room){
 		this.batch = batch;
 		
-		texEnnemi = new Texture(Gdx.files.internal("deamon.png"));       
+		texEnnemi = new Texture(Gdx.files.internal("sprites/deamon.png"));       
         
         stateTime = 0f;
 		

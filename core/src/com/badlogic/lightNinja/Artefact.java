@@ -49,10 +49,10 @@ public class Artefact {
 		this.batch = batch;
 		this.camera = camera;
 		if (type == TypeArtefact.POINT){
-			tex = new Texture(Gdx.files.internal("shuriken.png"));
+			tex = new Texture(Gdx.files.internal("sprites/rubis.png"));
 		}
 		else if (type == TypeArtefact.LIFE){
-			tex = new Texture(Gdx.files.internal("vie.png"));
+			tex = new Texture(Gdx.files.internal("sprites/vie.png"));
 		}
 	}
 	

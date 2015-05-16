@@ -18,9 +18,9 @@ public class Gui {
 	public Gui(){}
 	
 	public void create(SpriteBatch batch, Room room){
-		vieImage = new Texture(Gdx.files.internal("vie_32x32.png"));
-		shurikenImage = new Texture(Gdx.files.internal("shuriken_32x32.png"));
-		carreVert = new Texture(Gdx.files.internal("carreVert_32x32.png"));
+		vieImage = new Texture(Gdx.files.internal("sprites/vie.png"));
+		shurikenImage = new Texture(Gdx.files.internal("sprites/shuriken.png"));
+		carreVert = new Texture(Gdx.files.internal("sprites/carreVert.png"));
 		this.batch = batch;
 	}
 	

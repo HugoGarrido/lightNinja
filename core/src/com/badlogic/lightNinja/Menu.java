@@ -21,7 +21,7 @@ public class Menu implements Screen{
     public Menu(final LightNinjaGame gam) {
         game = gam;
         
-        bg = new Texture(Gdx.files.internal("background_menu.jpg"));
+        bg = new Texture(Gdx.files.internal("bg/main_menu.png"));
         
         soundTitle = Gdx.audio.newSound(Gdx.files.internal("sound/light_ninja_intro.wav"));
         soundClick = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));

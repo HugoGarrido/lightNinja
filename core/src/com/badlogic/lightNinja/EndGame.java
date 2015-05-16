@@ -19,7 +19,7 @@ public class EndGame {
 		this.batch = batch;
 		
 		
-		endGameImage = new Texture(Gdx.files.internal("portail.png"));
+		endGameImage = new Texture(Gdx.files.internal("sprites/portail.png"));
 		
 		rectangle = new Rectangle();
 		rectangle.width = 2;
