@@ -112,8 +112,8 @@ public class Ninja extends People {
 		
 		
 		super.rectangle = new Rectangle();
-		super.rectangle.x = 9;
-		super.rectangle.y = 10;
+		super.rectangle.x = 2;
+		super.rectangle.y = 1;
 		super.rectangle.width = 2;
 		super.rectangle.height = 2;
 		super.position = new Vector2(super.rectangle.x, super.rectangle.y);
@@ -173,7 +173,7 @@ public class Ninja extends People {
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
-			soundJump.play(1.0f);
+			soundJump.play(0.7f);
 			super.jump();
 		}
 		

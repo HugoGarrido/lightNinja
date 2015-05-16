@@ -168,7 +168,7 @@ public class Room extends Constante{
 //		MobilePlatform p6 = new MobilePlatform(3, 1, 2, 5, 5, 9, true);
 //		addMobilePlatform(p6);
 		
-		//addArtefacts();
+		addArtefacts();
 		addEnnemis();
 	}
 	
@@ -196,23 +196,18 @@ public class Room extends Constante{
 	}
 	
 	public void addArtefacts(){
-		for (int i = 0; i < Constante.ROOM_WIDTH; ++i){
-			Artefact arte;
-			if (i % 10 == 0 && elmtMatrix[i][2] == 0){
-				arte = new Artefact(i, 2, TypeArtefact.LIFE);
-				elmtMatrix[i][2] = 3;
-				idMatrix[i][2] = arte.getId();
-				arte.create(batch, camera, this);
-				artefacts.add(arte);
-			}
-			else if (elmtMatrix[i][2] == 0) {
-				arte = new Artefact(i, 2, TypeArtefact.POINT);
-				elmtMatrix[i][2] = 4;
-				idMatrix[i][2] = arte.getId();
-				arte.create(batch, camera, this);
-				artefacts.add(arte);
-			}
-		}
+		
+		Artefact a1 = new Artefact(32, 1, TypeArtefact.LIFE);
+		elmtMatrix[32][1] = 3;
+		idMatrix[32][1] = a1.getId();
+		a1.create(batch, camera, this);
+		artefacts.add(a1);
+		
+		Artefact a2 = new Artefact(5, 11, TypeArtefact.POINT);
+		elmtMatrix[5][11] = 3;
+		idMatrix[5][11] = a2.getId();
+		a2.create(batch, camera, this);
+		artefacts.add(a2);
 	}
 	
 	public void addMobilePlatform(MobilePlatform pMob){
