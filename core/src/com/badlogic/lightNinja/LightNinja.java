@@ -40,7 +40,7 @@ public class LightNinja implements Screen {
 		ninja.create(batch, camera, room, endGame);
 		
 		
-		endGame.create(batch, camera, room, 25, 3);
+		endGame.create(batch, camera, room, 60, 1);
 		
 		gui = new Gui();
 		gui.create(batch_fixed, camera, room);
