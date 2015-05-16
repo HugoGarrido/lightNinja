@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -25,7 +26,6 @@ public class Ninja extends People {
 	private int detectionZone;
 	private boolean lighted;
 	
-	private Texture ninjaImage;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
@@ -53,8 +53,10 @@ public class Ninja extends People {
     private float orientation = 1;
     
     float stateTime;
-
-	
+    
+    Sound soundShuriken;
+    Sound soundArtefact; 
+    
 	public Ninja(){}
 	
 	public int getLife()
@@ -71,10 +73,10 @@ public class Ninja extends People {
 		return score;
 	}
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, Room room){
-		////ninjaImage = new Texture(Gdx.files.internal("dark_ninja_still.png"));
+	public void create(SpriteBatch batch, OrthographicCamera camera, Room room, EndGame end){
 		this.batch = batch;
 		this.camera = camera;
+		
 		
 		spriteSheet = new Texture(Gdx.files.internal("dark_ninja_spritesheet.png"));
 		
@@ -99,9 +101,7 @@ public class Ninja extends People {
         		walkFramesRight[indexW++] = tmp[i][j];
         	}
         }
-        
        
-        
         for(int i = 2 ; i < 3 ; i++){
         	for(int j = 0; j < 5; j++){
         		jumpFrames[indexJ++] = tmp[i][j];
@@ -131,6 +131,9 @@ public class Ninja extends People {
 		super.currentRoom = room;
 		
 		currentFrame = stillAnimation.getKeyFrame(stateTime, true);
+		
+		soundShuriken = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));
+		soundArtefact = Gdx.audio.newSound(Gdx.files.internal("sound/artefact.wav"));
 		
 	}
 	
@@ -177,7 +180,6 @@ public class Ninja extends People {
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			super.jump();
-			//currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
@@ -192,6 +194,7 @@ public class Ninja extends People {
 		if(super.getLandedStatus() == false){
 			currentFrame = fallingAnimation.getKeyFrame(stateTime, true);
 		}
+		
 		
 		Iterator<Shuriken> iter = shurikens.iterator();
 		while(iter.hasNext()){
@@ -210,6 +213,8 @@ public class Ninja extends People {
 	
 	public void dispose(){
 		spriteSheet.dispose();
+		soundShuriken.dispose();
+		soundArtefact.dispose();
 	}
 
 	private void attack(float destX, float destY) {
@@ -217,6 +222,7 @@ public class Ninja extends People {
 		Shuriken shuriken = new Shuriken();
 		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, super.rectangle.y + super.rectangle.getHeight()/2, destX / Constante.LENGHT_BOX, destY / Constante.LENGHT_BOX, TimeUtils.nanoTime());		
 		shurikens.add(shuriken);
+		soundShuriken.play(1.0f);
 		
 	}
 	
@@ -225,6 +231,7 @@ public class Ninja extends People {
 		while(iter.hasNext()){
 			Artefact arte = iter.next();
 			if(arte.getRectangle().overlaps(this.rectangle)){
+				soundArtefact.play(1.0f);
 				arte.action(this);
 				iter.remove();
 				arte.dispose();

@@ -1,6 +1,7 @@
 package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -12,7 +13,7 @@ public class LightNinjaGame extends Game{
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("ninjaFont.fnt"));
 		this.setScreen(new Menu(this));
 	}
 

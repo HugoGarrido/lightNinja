@@ -1,11 +1,10 @@
 package com.badlogic.lightNinja;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class LightNinja implements Screen {	
@@ -16,6 +15,7 @@ public class LightNinja implements Screen {
 	private SpriteBatch batch;
 	private SpriteBatch batch_fixed;
 	private Ninja ninja;
+	private EndGame endGame;
 	private Room room;
 	private Gui gui;
 	
@@ -36,9 +36,12 @@ public class LightNinja implements Screen {
 		room.create(batch, camera);
 		
 		ninja = new Ninja();
-		ninja.create(batch, camera, room);
+		endGame = new EndGame();
+		ninja.create(batch, camera, room, endGame);
 		
-
+		
+		endGame.create(batch, camera, room, 25, 3);
+		
 		gui = new Gui();
 		gui.create(batch_fixed, camera, room);
 		
@@ -75,6 +78,7 @@ public class LightNinja implements Screen {
 		batch.begin();
 		    room.draw();
 			ninja.draw();
+			endGame.draw();
 		batch.end();
 		
 		batch_fixed.begin();
@@ -85,12 +89,24 @@ public class LightNinja implements Screen {
 		ninja.render();
 		room.render();
 		gui.render();
+		
+		if(endGame.reachEndLevel(ninja)){
+			game.setScreen(new FinishedLevel(game));
+			dispose();
+		};
+		
+		if(ninja.getLife() <= 0){
+			game.setScreen(new GameOver(game));
+			dispose();
+		}
 	}
 	
 	@Override
 	public void dispose(){
 		ninja.dispose();
 		room.dispose();
+		gui.dispose();
+		endGame.dispose();
 		batch.dispose();
 	}
 	
