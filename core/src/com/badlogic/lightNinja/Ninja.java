@@ -267,7 +267,10 @@ public class Ninja extends People {
 			else en.setOrientation(1);
 			//detection
 			if (Math.abs(en.rectangle.x - this.rectangle.x) < 5 ){
-				en.setDetected(true);
+				if(Math.abs(en.rectangle.y - this.rectangle.y) < 1){
+					en.setDetected(true);
+				}
+				
 			} else en.setDetected(false);
 			
 			checkShurikens(en);
