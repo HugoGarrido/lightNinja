@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -47,6 +48,7 @@ public class Ennemi extends People{
     
     float stateTime;
 
+    private Sound soundAttack; 
 	
 	public Ennemi(int posX, int posY){
 		super.rectangle = new Rectangle();
@@ -75,6 +77,7 @@ public class Ennemi extends People{
 		
 		super.currentRoom = room;
 		
+		soundAttack = Gdx.audio.newSound(Gdx.files.internal("sound/fireball.wav"));
 	}
 	
 	public void setNinja(Ninja ninja){
@@ -138,6 +141,7 @@ public class Ennemi extends People{
 		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, 
 				super.rectangle.y + super.rectangle.getHeight()/2, destX, destY, TimeUtils.nanoTime(), false, orientation);		
 		getShurikens().add(shuriken);
+		soundAttack.play(0.6f);
 		
 	}
 
@@ -171,6 +175,10 @@ public class Ennemi extends People{
 
 	public void setDetected(boolean detected) {
 		this.detected = detected;
+	}
+	
+	public void dispose(){
+		soundAttack.dispose();
 	}
 
 }

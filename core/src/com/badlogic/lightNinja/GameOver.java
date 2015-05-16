@@ -2,6 +2,7 @@ package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,13 +14,19 @@ public class GameOver implements Screen{
 
     public OrthographicCamera camera;
     
-
+    private Sound soundGameOver;
+    private Sound soundClick;
+    
     public GameOver(final LightNinjaGame gam) {
         game = gam;
         
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 768);
+        
+        soundGameOver = Gdx.audio.newSound(Gdx.files.internal("sound/game_over.wav"));
+        soundClick = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));
 
+        soundGameOver.play(1.0f);
     }
 
 	
@@ -37,6 +44,7 @@ public class GameOver implements Screen{
         game.batch.end();
 
         if (Gdx.input.isTouched()) {
+        	soundClick.play();
             game.setScreen(new Menu(game));
             dispose();
         }
