@@ -2,6 +2,7 @@ package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,14 +14,21 @@ public class Menu implements Screen{
 
     public OrthographicCamera camera;
     private Texture bg;
+    
+    Sound soundTitle;
+    Sound soundClick;
 
     public Menu(final LightNinjaGame gam) {
         game = gam;
         
         bg = new Texture(Gdx.files.internal("background_menu.jpg"));
-
+        
+        soundTitle = Gdx.audio.newSound(Gdx.files.internal("sound/light_ninja_intro.wav"));
+        soundClick = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));
+        
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 768);
+        soundTitle.play();
     }
 	
 	@Override
@@ -38,7 +46,9 @@ public class Menu implements Screen{
         game.font.draw(game.batch, "Tap anywhere to begin", 1024/2 -140, 768/2 - 50);
         game.batch.end();
 
-        if (Gdx.input.isTouched()) {
+        
+        if (Gdx.input.justTouched()) {
+        	soundClick.play();
             game.setScreen(new LightNinja(game));
             dispose();
         }
@@ -66,5 +76,7 @@ public class Menu implements Screen{
     
     public void dispose() {
     	bg.dispose();
+    	soundTitle.dispose();
+    	soundClick.dispose();
     }
 }

@@ -23,7 +23,7 @@ public class EndGame {
 		this.batch = batch;
 		this.camera = camera;
 		
-		endGameImage = new Texture(Gdx.files.internal("door.jpg"));
+		endGameImage = new Texture(Gdx.files.internal("portail.png"));
 		
 		rectangle = new Rectangle();
 		rectangle.width = 2;
@@ -48,21 +48,6 @@ public class EndGame {
 	}
 	
 	public boolean reachEndLevel(Ninja n){
-		/*
-		Rectangle intersection = new Rectangle();
-		
-		Intersector.intersectRectangles(n.getRectangle(), this.rectangle, intersection);
-		
-		if((intersection.x > n.getRectangle().x) && 
-				(intersection.y > n.getRectangle().y) && 
-				(intersection.x + intersection.width < n.getRectangle().x + n.getRectangle().width) &&
-				(intersection.y + intersection.height < n.getRectangle().y + n.getRectangle().height)
-			){
-			return true;
-		}else{
-			return false;
-		}
-    	*/
 		
 		if(n.getRectangle().overlaps(this.rectangle)){
 			return true;

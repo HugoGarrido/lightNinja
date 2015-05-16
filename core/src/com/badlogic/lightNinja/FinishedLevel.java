@@ -2,6 +2,7 @@ package com.badlogic.lightNinja;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
@@ -9,6 +10,9 @@ public class FinishedLevel implements Screen{
 	final LightNinjaGame game;
 
     public OrthographicCamera camera;
+    
+    private Sound soundYata;
+    private Sound soundClick;
    
     public FinishedLevel(final LightNinjaGame gam) {
         game = gam;
@@ -16,6 +20,9 @@ public class FinishedLevel implements Screen{
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1024, 768);
         
+        soundYata = Gdx.audio.newSound(Gdx.files.internal("sound/yata.wav"));
+        soundClick = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));
+        soundYata.play(1.0f);
     }
 
 	
@@ -59,5 +66,7 @@ public class FinishedLevel implements Screen{
  
     
     public void dispose() {
+    	soundYata.dispose();
+    	soundClick.dispose();
     }
 }

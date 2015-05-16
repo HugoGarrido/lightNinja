@@ -57,6 +57,8 @@ public class Ninja extends People {
     
     Sound soundShuriken;
     Sound soundArtefact; 
+    Sound soundJump;
+    Sound soundHit;
     
 	public Ninja(){}
 	
@@ -135,6 +137,8 @@ public class Ninja extends People {
 		
 		soundShuriken = Gdx.audio.newSound(Gdx.files.internal("sound/shuriken.mp3"));
 		soundArtefact = Gdx.audio.newSound(Gdx.files.internal("sound/artefact.wav"));
+		soundJump = Gdx.audio.newSound(Gdx.files.internal("sound/jump1.wav"));
+		soundHit = Gdx.audio.newSound(Gdx.files.internal("sound/hit.wav"));
 		
 	}
 	
@@ -183,6 +187,7 @@ public class Ninja extends People {
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
+			soundJump.play(1.0f);
 			super.jump();
 		}
 		
@@ -220,6 +225,8 @@ public class Ninja extends People {
 		spriteSheet.dispose();
 		soundShuriken.dispose();
 		soundArtefact.dispose();
+		soundHit.dispose();
+		soundJump.dispose();
 	}
 
 	private void attack(float destX, float destY) {
@@ -261,6 +268,7 @@ public class Ninja extends People {
 			Shuriken shrk = iter.next();
 			if(shrk.getRectangle().overlaps(this.rectangle)){
 				this.life--;
+				soundHit.play(1.0f);
 				iter.remove();
 				shrk.dispose();
 			}
