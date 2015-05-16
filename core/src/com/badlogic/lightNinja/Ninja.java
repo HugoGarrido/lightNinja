@@ -22,14 +22,15 @@ public class Ninja extends People {
 	private int strenghtPoint;
 	private int shurikenJauge;
 	
-	private int detectionZone;
+	private int detectionZone = 5;
+	private Ennemi ennemi;
 	private boolean lighted;
 	
 	private Texture ninjaImage;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	private long lifespanSh = 1000000000L;
+	private long lifespanSh = 150000000L;
 	private Array<Shuriken> shurikens;
 	
 	
@@ -100,8 +101,6 @@ public class Ninja extends People {
         	}
         }
         
-       
-        
         for(int i = 2 ; i < 3 ; i++){
         	for(int j = 0; j < 5; j++){
         		jumpFrames[indexJ++] = tmp[i][j];
@@ -158,8 +157,11 @@ public class Ninja extends People {
 		stateTime += Gdx.graphics.getDeltaTime();
 		
 		//Attack
-		if(Gdx.input.justTouched()){	
-			attack(Gdx.input.getX(), Gdx.input.getY());
+		//if(Gdx.input.justTouched()){
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)){
+			//attack(Gdx.input.getX(), Gdx.input.getY());
+			attack(position.x + super.rectangle.width/2 + orientation, position.y + 1.5f);
+			//System.out.println(Gdx.input.getX() + " , " + Gdx.input.getY());
 		}
 		
 		//Deplacement
@@ -177,7 +179,6 @@ public class Ninja extends People {
 		
 		if(Gdx.input.isKeyPressed(Keys.UP)){
 			super.jump();
-			//currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
 		}
 		
 		if (!Gdx.input.isKeyPressed(Keys.LEFT) && !Gdx.input.isKeyPressed(Keys.RIGHT)){
@@ -185,6 +186,7 @@ public class Ninja extends People {
 		}
 		
 		checkArtefact();
+		checkEnnemis();
 		
 		if(super.getJumpStatus() == true){
 			currentFrame = jumpAnimation.getKeyFrame(stateTime, true);
@@ -215,7 +217,18 @@ public class Ninja extends People {
 	private void attack(float destX, float destY) {
 		
 		Shuriken shuriken = new Shuriken();
-		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, super.rectangle.y + super.rectangle.getHeight()/2, destX / Constante.LENGHT_BOX, destY / Constante.LENGHT_BOX, TimeUtils.nanoTime());		
+		
+//		float testX = 0 + camera.position.x - 512;
+//		float testY = 0 + camera.position.y - 388;
+//		System.out.println("test :" + testX + ", " + testY);
+		
+		shuriken.create(batch, camera, super.rectangle.x + super.rectangle.getWidth()/2, 
+				super.rectangle.y + super.rectangle.getHeight()/2,
+				destX,
+				destY,
+//				(destX + camera.position.x) / Constante.LENGHT_BOX , 
+//				(destY + camera.position.y) / Constante.LENGHT_BOX , 
+				TimeUtils.nanoTime(), true, orientation);		
 		shurikens.add(shuriken);
 		
 	}
@@ -231,6 +244,49 @@ public class Ninja extends People {
 			}
 		}
 	}
+	
+	public void checkShurikens(Ennemi ennemi){
+		Iterator<Shuriken> iter = ennemi.getShurikens().iterator();
+		while(iter.hasNext()){
+			Shuriken shrk = iter.next();
+			if(shrk.getRectangle().overlaps(this.rectangle)){
+				this.life--;
+				iter.remove();
+				shrk.dispose();
+			}
+		}
+	}
+	
+	public void checkEnnemis(){
+		Iterator<Ennemi> iterEn = currentRoom.ennemis.iterator();
+		while(iterEn.hasNext()){
+			Ennemi en = iterEn.next();
+			//check if the ninja is on the right or on the left to the ennemi
+			if (en.rectangle.x - this.rectangle.x > 0){
+				en.setOrientation(-1);
+			}
+			else en.setOrientation(1);
+			//detection
+			if (Math.abs(en.rectangle.x - this.rectangle.x) < 5 ){
+				en.setDetected(true);
+			} else en.setDetected(false);
+			
+			checkShurikens(en);
+			Iterator<Shuriken> iterSh = shurikens.iterator();
+			while(iterSh.hasNext()){
+				Shuriken shrk = iterSh.next();
+				if(shrk.getRectangle().overlaps(en.rectangle)){
+					en.setLife(en.getLife() - 1);
+					iterSh.remove();
+					shrk.dispose();
+				}
+			}
+			if (en.getLife() == 0){
+				score += 60;
+				iterEn.remove();
+			}
+		}
+	}
 
 	public Vector2 getPosition(){
 		return this.position;
@@ -242,5 +298,9 @@ public class Ninja extends People {
 
 	public void setLife(int life) {
 		this.life = life;
+	}
+
+	public Array<Shuriken> getShurikens() {
+		return shurikens;
 	}
 }

@@ -11,18 +11,25 @@ public class Shuriken{
 	private long reach = 1500;
 	
 	private Rectangle shuriken;
-	private Texture shurikenImage;
+	private Texture projectileImage;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
+	
+	private float orientationNinja = -1;
 	
 	public Vector2 destination;
 	public Vector2 unit  = new Vector2();
 	public long startTime;
 	
-	public void create(SpriteBatch batch, OrthographicCamera camera, float posX, float posY, float destX, float destY, long startTime){
-		this.shurikenImage = new Texture(Gdx.files.internal("shuriken.png"));
+	public void create(SpriteBatch batch, OrthographicCamera camera, float posX, float posY, float destX, float destY, long startTime, boolean shurikenOrFire, float orientationNinja){
+		if (shurikenOrFire == true){
+			this.projectileImage = new Texture(Gdx.files.internal("shuriken.png"));
+		}
+		else this.projectileImage = new Texture(Gdx.files.internal("feu.png"));
+		
 		this.batch = batch;
 		this.camera = camera;
+		this.orientationNinja = orientationNinja;
 		
 		this.shuriken = new Rectangle();
 		this.shuriken.x = posX;
@@ -52,7 +59,6 @@ public class Shuriken{
 		//Calculer le vecteur qui va du ninja à la destination.
 		//orientation = dest - center
 		orientation = dest.add(center.scl(-1));
-		orientation.scl(1, -1);
 		
 		//Normaliser orientation
 		//Vector2 unit = orientation.scl(1/(dest.dst(center)));
@@ -60,7 +66,12 @@ public class Shuriken{
 	}
 	
 	public void draw(){
-		this.batch.draw(shurikenImage, shuriken.x * Constante.LENGHT_BOX, shuriken.y * Constante.LENGHT_BOX); 
+		float angle = 0;
+		if (orientationNinja == 1)
+			angle = 180;
+		
+		batch.draw(projectileImage,  shuriken.x * Constante.LENGHT_BOX, shuriken.y * Constante.LENGHT_BOX, 16, 16,
+				32, 32, 1, 1, angle,  0 , 0 , 32, 32, false, false);
 	}
 	
 	public Rectangle getRectangle(){
@@ -69,7 +80,7 @@ public class Shuriken{
 	
 	public void moveTo(){
 		
-		float step = 0.5f;
+		float step = 0.4f;
 		Vector2 center = new Vector2(0,0);
 		shuriken.getCenter(center);
 		
@@ -82,6 +93,6 @@ public class Shuriken{
 	}
 	
 	public void dispose(){
-		shurikenImage.dispose();
+		projectileImage.dispose();
 	}
 }

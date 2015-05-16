@@ -12,7 +12,6 @@ public class Room extends Constante{
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
-	
 	private Texture fond;
 	private int[][] lightMatrix;
 	protected int[][] elmtMatrix;
@@ -21,11 +20,13 @@ public class Room extends Constante{
 	protected Array<Platform> platforms;
 	protected Array<MobilePlatform> mobilePlatforms;
 	protected Array<Artefact> artefacts;
+	protected Array<Ennemi> ennemis;
 	
 	public Room(){
 		platforms = new Array<Platform>();
 		mobilePlatforms = new Array<MobilePlatform>();
 		artefacts = new Array<Artefact>();
+		ennemis = new Array<Ennemi>();
 		
 		elmtMatrix = new int[Constante.ROOM_WIDTH][Constante.ROOM_HEIGHT];
 		for(int i=0; i< Constante.ROOM_WIDTH; i++){
@@ -46,10 +47,16 @@ public class Room extends Constante{
 		
 		this.batch = batch;
 		this.camera = camera;
-		fond = new Texture(Gdx.files.internal("background_night.png"));
+		fond = new Texture(Gdx.files.internal("fond_new.png"));
 		
-		Platform p1 = new Platform(Constante.ROOM_HEIGHT, 1, 0, 0);
-		addPlatform(p1);
+		Platform sol = new Platform(Constante.ROOM_WIDTH, 1, 0, 0);
+		addPlatform(sol);
+		
+		Platform murG = new Platform (2, Constante.ROOM_HEIGHT, 0, 0);
+		addPlatform(murG);
+		
+		Platform murD = new Platform (1, Constante.ROOM_HEIGHT, Constante.ROOM_WIDTH -1, 0);
+		addPlatform(murD);
 		
 		Platform p2 = new Platform(1, 3, 8, 4);
 		addPlatform(p2);
@@ -84,7 +91,17 @@ public class Room extends Constante{
 		Platform p12 = new Platform(5, 1, 46, 11);
 		addPlatform(p12);
 		
+		
 		addArtefacts();
+		addEnnemis();
+	}
+	
+	public void addEnnemis(){
+		for (int i = 0; i < 6; i++){
+			Ennemi ennemi = new Ennemi(i * 5 + 5, 20);
+			ennemi.create(batch, camera, this);
+			ennemis.add(ennemi);
+		}
 	}
 	
 	public void addArtefacts(){
@@ -104,8 +121,6 @@ public class Room extends Constante{
 				arte.create(batch, camera, this);
 				artefacts.add(arte);
 			}
-			
-
 		}
 	}
 	
@@ -169,6 +184,10 @@ public class Room extends Constante{
 		for (Artefact a : artefacts){ 
 			a.draw();
 		}
+		for (Ennemi e : ennemis){ 
+			if (e.getLife() > 0)
+				e.draw();
+		}
 	}
 	
 	public void render(){
@@ -181,6 +200,10 @@ public class Room extends Constante{
 		}
 		for (Artefact a : artefacts){ 
 			a.render();
+		}
+		for (Ennemi e : ennemis){ 
+			if (e.getLife() > 0)
+				e.render();
 		}
 	}
 	

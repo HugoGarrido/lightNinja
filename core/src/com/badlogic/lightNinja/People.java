@@ -172,4 +172,9 @@ public abstract class People {
 	public boolean getLandedStatus(){
 		return this.isLanded;
 	}
+
+	public void dispose() {
+		
+	}
+
 }
