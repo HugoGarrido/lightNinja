@@ -1,26 +1,30 @@
 package com.badlogic.lightNinja;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class LightNinja extends ApplicationAdapter {
+public class LightNinja implements Screen {	
+	
+	final LightNinjaGame game;
 	
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private SpriteBatch batch_fixed;
 	private Ninja ninja;
+	private EndGame endGame;
 	private Room room;
 	private Gui gui;
 	
 	private float posCamX = 0;
 	private float posCamY = 0;
 	
-	@Override
-	public void create () {
+	LightNinja(LightNinjaGame gam){
+		this.game = gam;
+
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1024, 768);
@@ -32,7 +36,11 @@ public class LightNinja extends ApplicationAdapter {
 		room.create(batch, camera);
 		
 		ninja = new Ninja();
-		ninja.create(batch, camera, room);
+		endGame = new EndGame();
+		ninja.create(batch, camera, room, endGame);
+		
+		
+		endGame.create(batch, camera, room, 25, 3);
 		
 		gui = new Gui();
 		gui.create(batch_fixed, camera, room);
@@ -40,7 +48,7 @@ public class LightNinja extends ApplicationAdapter {
 	}
 
 	@Override
-	public void render () {
+	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0.2F, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
@@ -70,6 +78,7 @@ public class LightNinja extends ApplicationAdapter {
 		batch.begin();
 		    room.draw();
 			ninja.draw();
+			endGame.draw();
 		batch.end();
 		
 		batch_fixed.begin();
@@ -80,11 +89,45 @@ public class LightNinja extends ApplicationAdapter {
 		ninja.render();
 		room.render();
 		gui.render();
+		
+		if(endGame.reachEndLevel(ninja)){
+			game.setScreen(new FinishedLevel(game));
+			dispose();
+		};
+		
+		if(ninja.getLife() <= 0){
+			game.setScreen(new GameOver(game));
+			dispose();
+		}
 	}
 	
+	@Override
 	public void dispose(){
 		ninja.dispose();
 		room.dispose();
+		gui.dispose();
+		endGame.dispose();
 		batch.dispose();
 	}
+	
+	@Override
+	public void show() {
+    }
+ 
+	@Override
+    public void hide() {
+    }
+ 
+	@Override
+    public void pause() {
+    }
+ 
+	@Override
+    public void resume() {
+    }
+    
+	@Override
+	public void resize(int width, int height) {
+    }
+
 }
